@@ -22,23 +22,25 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
         {
-            if(await UserExists(registerDTO.userName)) return BadRequest("Username is taken");
+            if(await UserExists(registerDTO.UserName)) return BadRequest("Username is taken");
             using var hmac = new HMACSHA512();
             var user = new AppUser
             {
-                UserName = registerDTO.userName.ToLower(),
-                FirstName = registerDTO.firstName,
-                LastName = registerDTO.lastName,
-                EmailAddress = registerDTO.emailAddress,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.password)),
-                PasswordSalt = hmac.Key
+                UserName = registerDTO.UserName.ToLower(),
+                FirstName = registerDTO.FirstName,
+                LastName = registerDTO.LastName,
+                EmailAddress = registerDTO.EmailAddress,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),
+                PasswordSalt = hmac.Key,
+                PhoneNumber = registerDTO.PhoneNumber,
+                Address = registerDTO.Address
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return new UserDTO
             {
-                userName = user.UserName,
-                token = _tokenService.CreateToken(user)
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user)
             };
         }
 
@@ -50,18 +52,18 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDTO.userName);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDTO.UserName);
             if (user == null) return Unauthorized("Invalid username");
             using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.password));
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
             for(int i = 0; i < computedHash.Length; i++)
             {
                 if(computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
             }
             return new UserDTO
             {
-                userName = user.UserName,
-                token = _tokenService.CreateToken(user)
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user)
             };
         }
         
