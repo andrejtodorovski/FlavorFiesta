@@ -16,7 +16,7 @@ namespace API.Repositories
 
             public async Task<IEnumerable<Order>> GetAllOrdersForUser(int userId)
             {
-                return await _context.Orders.Where(o => o.AppUserId == userId).ToListAsync();
+                return await _context.Orders.Include(user => user.AppUser).Where(o => o.AppUserId == userId).ToListAsync();
             }
     }
 }

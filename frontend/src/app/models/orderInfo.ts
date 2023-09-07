@@ -1,4 +1,10 @@
+import { ShoppingCartInfo } from "./shoppingCartInfo";
+
 export interface OrderInfo {
-    address: string;
-    phoneNumber: string;
+    id: number,
+    phoneNumber: string,
+    address: string,
+    orderStatus: string,
+    appUserName: string,
+    shoppingCart: ShoppingCartInfo
 }

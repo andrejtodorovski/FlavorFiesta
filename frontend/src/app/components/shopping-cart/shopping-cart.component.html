@@ -19,7 +19,7 @@
         class="btn btn-warning btn-lg"
         data-bs-toggle="modal"
         data-bs-target="#orderModal"
-        [disabled]="!shoppingCart || shoppingCart.cartItems.length!=0"
+        [disabled]="!shoppingCart || shoppingCart.cartItems.length==0"
       >
         Order now
       </button>
@@ -63,7 +63,7 @@
                     [(ngModel)]="orderInfo.phoneNumber"
                   />
                 </div>
-                <button class="btn btn-primary btn-lg px-5" type="submit" [disabled]="orderInfo.address=='' || orderInfo.phoneNumber==''">
+                <button data-bs-dismiss="modal" aria-label="Close" class="btn btn-primary btn-lg px-5" type="submit" [disabled]="orderInfo.address=='' || orderInfo.phoneNumber==''">
                   Place order
                 </button>
               </div>

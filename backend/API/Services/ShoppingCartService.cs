@@ -24,5 +24,10 @@ namespace API.Services
         {
             return _repository.GetShoppingCartForUserAsync(userId);
         }
+
+        public void PlaceOrder(int userId, string phoneNumber, string address)
+        {
+            _repository.PlaceOrder(userId, phoneNumber, address);
+        }
     }
 }

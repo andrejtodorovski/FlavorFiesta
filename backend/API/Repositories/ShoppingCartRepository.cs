@@ -15,6 +15,15 @@ namespace API.Repositories
             _context = context;
         }
 
+        public ShoppingCart Create(AppUser user)
+        {
+            return _context.ShoppingCarts.Add(new ShoppingCart { 
+                AppUser = user,
+                AppUserId = user.Id,
+                Status = "Active",
+             }).Entity;
+        }
+
         public async Task<ShoppingCartDTO> GetShoppingCartById(int Id)
         {
             var shoppingCart = await _context.ShoppingCarts.Include(user => user.AppUser).Include(cart => cart.CartItems).ThenInclude(item => item.Food).FirstOrDefaultAsync(cart => cart.Id == Id);
@@ -54,12 +63,23 @@ namespace API.Repositories
             return shoppingCartDTO;
         }
 
+        public async Task<ShoppingCart> GetShoppingCartByUserId(int userId)
+        {
+            return await _context.ShoppingCarts
+            .Include(user => user.AppUser)
+            .Include(cart => cart.CartItems)
+            .ThenInclude(item => item.Food)
+            .Where(cart => cart.Status == "Active")
+            .FirstOrDefaultAsync(cart => cart.AppUserId == userId);
+        }
+
         public async Task<ShoppingCartDTO> GetShoppingCartForUserAsync(int userId)
         {
             var shoppingCart = await _context.ShoppingCarts
             .Include(user => user.AppUser)
             .Include(cart => cart.CartItems)
-                .ThenInclude(item => item.Food)
+            .ThenInclude(item => item.Food)
+            .Where(cart => cart.Status == "Active")
             .FirstOrDefaultAsync(cart => cart.AppUserId == userId);
 
             if (shoppingCart == null)
@@ -109,8 +129,9 @@ namespace API.Repositories
             .Include(user => user.AppUser)
             .Include(cart => cart.CartItems)
                 .ThenInclude(item => item.Food)
+            .Where(cart => cart.Status == "Active")
             .FirstOrDefaultAsync(cart => cart.AppUserId == userId);
-
+            // get the active shopping cart of the user
             if (shoppingCart == null)
             {
                 return;
@@ -118,7 +139,8 @@ namespace API.Repositories
 
             shoppingCart.Status = "Ordered";
             _context.ShoppingCarts.Update(shoppingCart);
-            _context.SaveChanges();
+            Create(shoppingCart.AppUser);
+            await _context.SaveChangesAsync();
 
             var order = new Order{
                 PhoneNumber = phoneNumber,
@@ -130,6 +152,8 @@ namespace API.Repositories
             };
 
             _context.Orders.Add(order);
+
+            
             await _context.SaveChangesAsync();
 
         }

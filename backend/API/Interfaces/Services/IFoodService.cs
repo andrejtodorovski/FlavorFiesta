@@ -14,7 +14,7 @@ namespace API.Interfaces.Services
         void AddFood(Food food);
         void UpdateFood(Food food);
         void DeleteFood(int Id);
-        Task<IEnumerable<Food>> GetFoodsByCategory(string category);
+        Task<IEnumerable<Food>> GetFoodsByCategory(int categoryId);
         Task<IEnumerable<Food>> GetTopRatedFoods();
         Task<IEnumerable<Food>> GetMostViewedFoods();
         Task<IEnumerable<Food>> GetNewestFoods();

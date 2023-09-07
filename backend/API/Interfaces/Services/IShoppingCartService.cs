@@ -10,5 +10,6 @@ namespace API.Interfaces.Services
     {
         public Task<ShoppingCartDTO> GetShoppingCartForUserAsync(int userId);
         public Task<ShoppingCartDTO> GetShoppingCartById(int Id);
+        void PlaceOrder(int userId, string phoneNumber, string address);
     }
 }

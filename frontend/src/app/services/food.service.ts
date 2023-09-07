@@ -9,7 +9,7 @@ import { Category } from '../models/category';
 })
 export class FoodService {
 
-  foodUrl = 'https://localhost:5001/api/foods';
+  foodUrl = 'https://localhost:5001/api/food';
   constructor(private httpClient: HttpClient) { }
   getFoods(): Observable<Food[]> {
     return this.httpClient.get<Food[]>(this.foodUrl);
@@ -29,5 +29,7 @@ export class FoodService {
   getCategories(): Observable<Category[]> {
     return this.httpClient.get<Category[]>(`${this.foodUrl}/categories`);
   }
-
+  getFoodsByCategory(categoryId: number): Observable<Food[]> {
+    return this.httpClient.get<Food[]>(`${this.foodUrl}/category/${categoryId}`);
+  }
 }

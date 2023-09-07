@@ -13,24 +13,40 @@ namespace API.Services
     {
         private readonly IFoodRepository _repository;
         private readonly ICategoryRepository _categoryRepository;
-        public FoodService(IFoodRepository repository, ICategoryRepository categoryRepository)
+        private readonly IShoppingCartRepository _shoppingCartRepository;
+        private readonly ICartItemRepository _cartItemRepository;
+        public FoodService(IFoodRepository repository, ICategoryRepository categoryRepository, IShoppingCartRepository shoppingCartRepository, ICartItemRepository cartItemRepository)
         {
             _repository = repository;
             _categoryRepository = categoryRepository;
+            _shoppingCartRepository = shoppingCartRepository;
+            _cartItemRepository = cartItemRepository;
         }   
         public void AddFood(Food food)
         {
             _repository.AddFood(food);
         }
 
-        public void AddToCart(AddToCartDTO addToCartDTO)
+        public async void AddToCart(AddToCartDTO addToCartDTO)
         {
             var cartItem = new CartItem
             {
                 FoodId = addToCartDTO.FoodId,
                 Quantity = addToCartDTO.Quantity
             };
-            // finish this later
+            var food = await _repository.GetFood(addToCartDTO.FoodId);
+            var shoppingCart = await _shoppingCartRepository.GetShoppingCartByUserId(1);
+            var subtotal = cartItem.Quantity * food.Price;
+            shoppingCart.TotalPrice += subtotal;
+            _cartItemRepository.Create(new CartItem
+            {
+                Quantity = addToCartDTO.Quantity,
+                Subtotal = subtotal,
+                FoodId = addToCartDTO.FoodId,
+                Food = food,
+                ShoppingCartId = shoppingCart.Id,
+                ShoppingCart = shoppingCart
+            });
         }
 
         public async void DeleteFood(int Id)
@@ -54,10 +70,10 @@ namespace API.Services
             return await _repository.GetFoods();
         }
 
-        public async Task<IEnumerable<Food>> GetFoodsByCategory(string category)
+        public async Task<IEnumerable<Food>> GetFoodsByCategory(int categoryId)
         {
             var foods = await _repository.GetFoods();
-            return foods.Where(f => f.Categories.Any(c => c.Name == category));
+            return foods.Where(f => f.Categories.Any(c => c.Id == categoryId));
         }
 
         public async Task<IEnumerable<Food>> GetMostViewedFoods()

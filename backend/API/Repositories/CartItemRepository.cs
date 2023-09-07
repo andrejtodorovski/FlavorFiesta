@@ -14,6 +14,12 @@ namespace API.Repositories
             _context = context;
         }
 
+        public void Create(CartItem cartItem)
+        {
+            _context.CartItems.Add(cartItem);
+            _context.SaveChanges();
+        }
+
         public async Task<IEnumerable<CartItem>> GetCartItems(int cartId)
         {
             return await _context.CartItems.Where(ci => ci.ShoppingCartId == cartId).ToListAsync();

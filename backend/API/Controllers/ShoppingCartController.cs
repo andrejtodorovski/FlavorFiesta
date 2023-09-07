@@ -19,6 +19,12 @@ namespace API.Controllers
             return Ok(shoppingCart);
         }
 
+        [HttpPost]
+        public void PlaceOrder(PlaceOrderDTO placeOrderDTO)
+        {
+            _service.PlaceOrder(1, placeOrderDTO.PhoneNumber, placeOrderDTO.Address);
+        }
+
         
     }
 }

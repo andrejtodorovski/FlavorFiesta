@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ShoppingCartInfo } from '../models/shoppingCartInfo';
 import { Observable } from 'rxjs';
-import { OrderInfo } from '../models/orderInfo';
+import { OrderDTO } from '../models/orderDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class ShoppingCartService {
     return this.httpClient.get<ShoppingCartInfo>(this.shoppingCartUrl);
   }
 
-  placeOrder(orderInfo: OrderInfo) {
+  placeOrder(orderInfo: OrderDTO) {
     return this.httpClient.post(this.shoppingCartUrl, orderInfo);
   }
   

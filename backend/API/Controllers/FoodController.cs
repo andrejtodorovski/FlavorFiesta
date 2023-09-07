@@ -5,15 +5,17 @@ using API.DTOs;
 
 namespace API.Controllers
 {
-    public class FoodsController : BaseApiController
+    public class FoodController : BaseApiController
     {
         private readonly IFoodService _service;
-        public FoodsController(IFoodService service)
+        public FoodController(IFoodService service)
         {
             _service = service;
         }
+        // add query param categoryId to this method below
+        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Food>>> GetFoods()
+        public async Task<ActionResult<IEnumerable<Food>>> GetFoods(int categoryId)
         {
             var foods = await _service.GetFoods();
             return Ok(foods);
@@ -26,9 +28,9 @@ namespace API.Controllers
             return Ok(food);
         }
         [HttpGet("category/{category}")]
-        public async Task<ActionResult<IEnumerable<Food>>> GetFoodsByCategory(string category)
+        public async Task<ActionResult<IEnumerable<Food>>> GetFoodsByCategory(int categoryId)
         {
-            var foods = await _service.GetFoodsByCategory(category);
+            var foods = await _service.GetFoodsByCategory(categoryId);
             return Ok(foods);
         }
         [HttpGet("top-rated")]
