@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Category } from 'src/app/models/category';
 import { AccountService } from 'src/app/services/account.service';
+import { FoodService } from 'src/app/services/food.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,10 +11,12 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class NavbarComponent implements OnInit {
   loggedIn = false;
+  categories : Category[] = [];
   ngOnInit(): void {
     this.getCurrentUser();
+    this.getCategories();
   }
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, private foodService: FoodService) {}
   logout() {
     this.accountService.logout();
   }
@@ -19,6 +24,14 @@ export class NavbarComponent implements OnInit {
     return this.accountService.currentUser$.subscribe({
       next: (response) => {
         this.loggedIn = !!response;
+      },
+    });
+  }
+
+  getCategories() {
+    this.foodService.getCategories().subscribe({
+      next: (response) => {
+        this.categories = response;
       },
     });
   }

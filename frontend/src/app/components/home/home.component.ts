@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Recipe } from 'src/app/models/recipe';
+import { Food } from 'src/app/models/food';
 import { AccountService } from 'src/app/services/account.service';
-import { RecipeService } from 'src/app/services/recipe.service';
+import { FoodService } from 'src/app/services/food.service';
 
 @Component({
   selector: 'app-home',
@@ -10,28 +10,28 @@ import { RecipeService } from 'src/app/services/recipe.service';
 })
 export class HomeComponent implements OnInit {
   loggedIn = false;
-  newest: Recipe[] = [];
-  topRated: Recipe[] = [];
-  mostViewed: Recipe[] = [];
+  newest: Food[] = [];
+  topRated: Food[] = [];
+  mostViewed: Food[] = [];
   ngOnInit(): void {
-    this.getRecipes();
+    this.getFoods();
     this.getCurrentUser();
   }
-  constructor(private accountService: AccountService, private recipeService: RecipeService) { }
-  getRecipes() {
-    this.recipeService.getNewestRecipes().subscribe({
-      next: (response: Recipe[]) => {
+  constructor(private accountService: AccountService, private foodService: FoodService) { }
+  getFoods() {
+    this.foodService.getNewestFoods().subscribe({
+      next: (response: Food[]) => {
         this.newest = response;
       }
     }
     );
-    this.recipeService.getMostViewedRecipes().subscribe({
-      next: (response: Recipe[]) => {
+    this.foodService.getMostViewedFoods().subscribe({
+      next: (response: Food[]) => {
         this.mostViewed = response;
       }
     });
-    this.recipeService.getTopRatedRecipes().subscribe({
-      next: (response: Recipe[]) => {
+    this.foodService.getTopRatedFoods().subscribe({
+      next: (response: Food[]) => {
         this.topRated = response;
       }
     });

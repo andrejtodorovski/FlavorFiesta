@@ -1,0 +1,29 @@
+<div class="bg-light">
+  <div class="container">
+    <div class="row pt-4" style="height: 70%">
+      <div class="col-5">
+        <img class="img-fluid" src="" alt="Recipe image" />
+      </div>
+      <p class="col-7"></p>
+      <h1 class="display-6">{{ food?.name }}</h1>
+      <p>Total views: {{ food?.viewCount }}</p>
+      <p>Average Rating: {{ food?.averageRating }}</p>
+      <p>Calories: {{ food?.calories }}</p>
+      <p>Description: {{ food?.description }}</p>
+      <!-- <h6 class="display-6">Ingredients</h6> -->
+      <!-- <div *ngFor="let ing of food?.ingredientList">
+            {{ ing.quantity }} {{ ing.measure }} {{ ing.name }}
+          </div> -->
+    </div>
+  </div>
+  <!-- <div class="row m-3">
+            <div class="col-8 align-self-center">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" *ngFor="let c of recipe?.categoryList">
+                        <a class="link-class text-dark" routerLink="/category/{{ c.name.toLocaleLowerCase() }}">{{
+                            c.name }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div> -->
+</div>

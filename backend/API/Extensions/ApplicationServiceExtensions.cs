@@ -1,5 +1,8 @@
 using API.Data;
 using API.Interfaces;
+using API.Interfaces.Repositories;
+using API.Interfaces.Services;
+using API.Repositories;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +16,17 @@ namespace API.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddCors();
+
+            services.AddTransient<IFoodRepository, FoodRepository>();
+            services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<ICartItemRepository, CartItemRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IFoodService, FoodService>();
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IOrderService, OrderService>();
             return services;
         }
         

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { RegisterDTO } from 'src/app/models/registerDTO';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -18,17 +19,12 @@ export class RegisterComponent implements OnInit {
     address: '',
   };
   error: string = '';
-  constructor(private accountService: AccountService) {}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  constructor(private accountService: AccountService, private router: Router) {}
+  ngOnInit(): void {}
   register() {
     this.accountService.register(this.registerDTO).subscribe({
       next: () => {
-        window.location.href = '/';
-      },
-      error: (error) => {        
-        this.error = error.error.title;
+        this.router.navigateByUrl('/login');
       }
     });
   }

@@ -36,7 +36,13 @@ namespace API.Controllers
                 Address = registerDTO.Address
             };
             _context.Users.Add(user);
+            _context.ShoppingCarts.Add(new ShoppingCart { 
+                AppUser = user,
+                AppUserId = user.Id,
+                Status = "Active",
+             });
             await _context.SaveChangesAsync();
+            
             return new UserDTO
             {
                 UserName = user.UserName,

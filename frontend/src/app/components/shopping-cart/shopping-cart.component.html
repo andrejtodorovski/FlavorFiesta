@@ -1,0 +1,76 @@
+<div class="bg-light">
+  <div class="container">
+    <div *ngIf="shoppingCart" class="row pt-4">
+      <div *ngFor="let item of shoppingCart.cartItems">
+        <div class="col-5">
+          <img class="img-fluid" src="" alt="Recipe image" />
+        </div>
+        <p class="col-7"></p>
+        <h1 class="display-6">{{ item.food.name }}</h1>
+        <p>Calories: {{ item.food.calories }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <p>Price: {{ item.food.price }}</p>
+        <p>Subtotal: {{ item.subtotal }}</p>
+      </div>
+      <h2>Total price: {{ shoppingCart.totalPrice }}</h2>
+    </div>
+    <div class="text-center pb-4">
+      <button
+        class="btn btn-warning btn-lg"
+        data-bs-toggle="modal"
+        data-bs-target="#orderModal"
+        [disabled]="!shoppingCart || shoppingCart.cartItems.length!=0"
+      >
+        Order now
+      </button>
+    </div>
+    <div
+      class="modal fade"
+      id="orderModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="orderModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="orderModalLabel">Enter your Order Info</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <form #orderInfoForm="ngForm" (ngSubmit)="submitOrder()" autocomplete="off">
+              <div class="mb-md-5 mt-md-4">
+                <div class="form-outline form-white mb-4">                 
+                  <label class="form-label" for="address">Address</label><br /> 
+                  <input
+                    required
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="Street 1, Number 2, City, Country"
+                    name="address"
+                    [(ngModel)]="orderInfo.address"
+                  />
+                </div>
+                <div class="form-outline form-white mb-4">
+                    <label class="form-label" for="phoneNumber">Phone number</label><br />
+                    <input
+                    required
+                    type="text"
+                    class="form-control form-control-lg"
+                    placeholder="071-000-000"
+                    name="phoneNumber"
+                    [(ngModel)]="orderInfo.phoneNumber"
+                  />
+                </div>
+                <button class="btn btn-primary btn-lg px-5" type="submit" [disabled]="orderInfo.address=='' || orderInfo.phoneNumber==''">
+                  Place order
+                </button>
+              </div>
+            </form> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

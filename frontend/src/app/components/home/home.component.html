@@ -1,43 +1,41 @@
 <div class="bg-dark text-white">
-    <div class="container pb-1">
-      <div class="position-relative pt-3 pb-5">
-        <img src="../../../assets/ingredients.jpg" class="mainPageImage" />
-        <a routerLink="/addRecipe" *ngIf="loggedIn"
-           class="btn btn-block btn-success position-absolute bottom-20 start-50 translate-middle-x ps-5 pe-5 pt-3"
+    <div class="container pt-3 pb-2">
+      <div class="mb-5 d-flex justify-content-center align-items-end" style="background: url('https://img.freepik.com/free-photo/vegetables-set-left-black-slate_1220-685.jpg?w=1480&t=st=1690120370~exp=1690120970~hmac=f2ef0910e2fd1eccbf10ea37e2eb90496a3155b55b2099f11437a55be6a914aa') no-repeat center center; height: 600px;">
+        <a routerLink="/add-food" *ngIf="loggedIn"
+           class="btn btn-block btn-success ps-5 pe-5 pt-3" 
         >
-          <h5>Add Recipe</h5>
+          <h5>Add food</h5>
         </a>
       </div>
       </div>
       </div>
       <div class="bg-light pt-4 pb-4">
       <div class="container">
-      <h1 class="display-6">Most Viewed Recipes</h1>
+      <h1 class="display-6">Most Viewed Foods</h1>
       <div class="card-group bg-light">
         <div
-          *ngFor="let recipe of mostViewed"
+          *ngFor="let food of mostViewed"
           class="card m-3 card-border-radius bg-light"
         >
           <!-- <img
             class="card-img-top"
-            routerLink="/recipe/{{ recipe.id }}"
-            [src]="'data:image/jpg;base64,' + recipe.imageList[0].byteArray"
-            alt="Recipe image"
+            routerLink="/food/{{ food.id }}"
+            [src]="'data:image/jpg;base64,' + food.imageList[0].byteArray"
+            alt="food image"
           /> -->
           <div class="card-body">
             <a
-              class="card-title custom-card-title recipeName text-dark"
-              routerLink="/recipe/{{ recipe.id }}"
-              >{{ recipe.name }}</a
+              class="card-title custom-card-title foodName text-dark"
+              routerLink="/food/{{ food.id }}"
+              >{{ food.name }}</a
             >
             
             <div class="card-text d-flex justify-content-between">
-              <p>{{ recipe.viewCount }} views</p>
-              <p>{{ recipe.difficulty }}</p>
+              <p>{{ food.viewCount }} views</p>
             </div>
             <div class="card-text d-flex justify-content-between text-muted">
-              <p>{{ recipe.dateCreated }}</p>
-              <!-- <p><a routerLink="/userInfo/{{recipe.customerName}}" class="recipeName">{{ recipe.customerName }}</a></p> -->
+              <p>{{ food.dateCreated }}</p>
+              <!-- <p><a routerLink="/userInfo/{{food.customerName}}" class="foodName">{{ food.customerName }}</a></p> -->
             </div>
           </div>
         </div>
@@ -46,29 +44,28 @@
       </div>
       <div class="bg-dark text-white pt-4 pb-4">
       <div class="container">
-      <h3 class="display-6">Top Rated Recipes</h3>
+      <h3 class="display-6">Top Rated Foods</h3>
       <div class="card-group ">
-        <div *ngFor="let recipe of topRated" class="card m-3 card-border-radius bg-dark">
+        <div *ngFor="let food of topRated" class="card m-3 card-border-radius bg-dark text-white border-white">
           <!-- <img
             class="card-img-top"
-            routerLink="/recipe/{{ recipe.id }}"
-            [src]="'data:image/jpg;base64,' + recipe.imageList[0].byteArray"
-            alt="Recipe image"
+            routerLink="/food/{{ food.id }}"
+            [src]="'data:image/jpg;base64,' + food.imageList[0].byteArray"
+            alt="food image"
           /> -->
           <div class="card-body">
             <a
-              class="card-title custom-card-title recipeName text-white"
-              routerLink="/recipe/{{ recipe.id }}"
-              >{{ recipe.name }}</a
+              class="card-title custom-card-title foodName"
+              routerLink="/food/{{ food.id }}"
+              >{{ food.name }}</a
             >
             
             <div class="card-text d-flex justify-content-between">
-              <p>{{ recipe.viewCount }} views</p>
-              <p>{{ recipe.difficulty }}</p>
+              <p>{{ food.viewCount }} views</p>
             </div>
-            <div class="card-text d-flex justify-content-between text-muted">
-              <p>{{ recipe.dateCreated }}</p>
-              <!-- <p><a routerLink="/userInfo/{{recipe.customerName}}" class="recipeName whiteText">{{ recipe.customerName }}</a></p> -->
+            <div class="card-text d-flex justify-content-between">
+              <p>{{ food.dateCreated }}</p>
+              <!-- <p><a routerLink="/userInfo/{{food.customerName}}" class="foodName whiteText">{{ food.customerName }}</a></p> -->
             </div>
           </div>
         </div>
@@ -77,33 +74,31 @@
       </div>
       <div class="bg-light pt-4 pb-4">
       <div class="container">
-      <h3 class="display-6">Newest Recipes</h3>
+      <h3 class="display-6">Newest Foods</h3>
       <div class="card-group bg-light">
-        <div *ngFor="let recipe of newest" class="card m-3 card-border-radius bg-light">
+        <div *ngFor="let food of newest" class="card m-3 card-border-radius bg-light">
           <!-- <img
             class="card-img-top"
-            routerLink="/recipe/{{ recipe.id }}"
-            [src]="'data:image/jpg;base64,' + recipe.imageList[0].byteArray"
-            alt="Recipe image"
+            routerLink="/food/{{ food.id }}"
+            [src]="'data:image/jpg;base64,' + food.imageList[0].byteArray"
+            alt="food image"
           /> -->
           <div class="card-body">
             <a
-              class="card-title custom-card-title recipeName text-dark"
-              routerLink="/recipe/{{ recipe.id }}"
-              >{{ recipe.name }}</a
+              class="card-title custom-card-title foodName text-dark"
+              routerLink="/food/{{ food.id }}"
+              >{{ food.name }}</a
             >
             
             <div class="card-text d-flex justify-content-between">
-              <p>{{ recipe.viewCount }} views</p>
-              <p>{{ recipe.difficulty }}</p>
+              <p>{{ food.viewCount }} views</p>
             </div>
             <div class="card-text d-flex justify-content-between text-muted">
-              <p>{{ recipe.dateCreated }}</p>
-              <!-- <p><a routerLink="/userInfo/{{recipe.customerName}}" class="recipeName">{{ recipe.customerName }}</a></p> -->
+              <p>{{ food.dateCreated }}</p>
+              <!-- <p><a routerLink="/userInfo/{{food.customerName}}" class="foodName">{{ food.customerName }}</a></p> -->
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  

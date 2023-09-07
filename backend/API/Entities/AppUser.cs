@@ -11,6 +11,9 @@ namespace API.Entities
         public byte[] PasswordSalt { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
+        public ICollection<Review> Reviews { get; } = new List<Review>();
+        public ICollection<ShoppingCart> ShoppingCarts { get; } = new List<ShoppingCart>();
+        public ICollection<Order> Orders { get; } = new List<Order>();
         
     }
 }
