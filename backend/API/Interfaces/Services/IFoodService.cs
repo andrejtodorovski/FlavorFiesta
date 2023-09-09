@@ -18,7 +18,8 @@ namespace API.Interfaces.Services
         Task<IEnumerable<Food>> GetTopRatedFoods();
         Task<IEnumerable<Food>> GetMostViewedFoods();
         Task<IEnumerable<Food>> GetNewestFoods();
-        void AddToCart(AddToCartDTO addToCartDTO);
+        void AddToCart(AddToCartDTO addToCartDTO, string username);
         Task<IEnumerable<Category>> GetCategories();
+        Task<bool> IsFoodInUserShoppingCart(int foodId, string username);
     }
 }

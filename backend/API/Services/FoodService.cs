@@ -15,27 +15,30 @@ namespace API.Services
         private readonly ICategoryRepository _categoryRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly ICartItemRepository _cartItemRepository;
-        public FoodService(IFoodRepository repository, ICategoryRepository categoryRepository, IShoppingCartRepository shoppingCartRepository, ICartItemRepository cartItemRepository)
+        private readonly IUserRepository _userRepository;
+        public FoodService(IFoodRepository repository, ICategoryRepository categoryRepository, IShoppingCartRepository shoppingCartRepository, ICartItemRepository cartItemRepository, IUserRepository userRepository   )
         {
             _repository = repository;
             _categoryRepository = categoryRepository;
             _shoppingCartRepository = shoppingCartRepository;
             _cartItemRepository = cartItemRepository;
+            _userRepository = userRepository;
         }   
         public void AddFood(Food food)
         {
             _repository.AddFood(food);
         }
 
-        public async void AddToCart(AddToCartDTO addToCartDTO)
+        public async void AddToCart(AddToCartDTO addToCartDTO, string username)
         {
+            var user = _userRepository.GetUserByUsername(username);
             var cartItem = new CartItem
             {
                 FoodId = addToCartDTO.FoodId,
                 Quantity = addToCartDTO.Quantity
             };
             var food = await _repository.GetFood(addToCartDTO.FoodId);
-            var shoppingCart = await _shoppingCartRepository.GetShoppingCartByUserId(1);
+            var shoppingCart = await _shoppingCartRepository.GetShoppingCartByUserId(user.Id);
             var subtotal = cartItem.Quantity * food.Price;
             shoppingCart.TotalPrice += subtotal;
             _cartItemRepository.Create(new CartItem
@@ -92,6 +95,13 @@ namespace API.Services
         {
             var foods = await _repository.GetFoods();
             return foods.OrderByDescending(f => f.AverageRating).Take(5);
+        }
+
+        public async Task<bool> IsFoodInUserShoppingCart(int foodId, string username)
+        {
+            var user = _userRepository.GetUserByUsername(username);
+            var shoppingCart = await _shoppingCartRepository.GetShoppingCartByUserId(user.Id);
+            return shoppingCart.CartItems.Any(ci => ci.FoodId == foodId);
         }
 
         public void UpdateFood(Food food)

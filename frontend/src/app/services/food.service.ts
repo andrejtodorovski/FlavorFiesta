@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Food } from '../models/food';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category';
+import { AddToCart } from '../models/addToCart';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,11 @@ export class FoodService {
   }
   getFoodsByCategory(categoryId: number): Observable<Food[]> {
     return this.httpClient.get<Food[]>(`${this.foodUrl}/category/${categoryId}`);
+  }
+  addFoodToCard(addToCart : AddToCart): Observable<void> {
+    return this.httpClient.post<void>(`${this.foodUrl}/add-to-cart`, addToCart);
+  }
+  isFoodInUserShoppingCart(foodId: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.foodUrl}/is-food-in-user-shopping-cart/${foodId}`);
   }
 }

@@ -12,16 +12,17 @@ namespace API.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IShoppingCartRepository _shoppingCartRepository;
-        public OrderService(IOrderRepository orderRepository, IShoppingCartRepository shoppingCartRepository)
+        private readonly IUserRepository _userRepository;
+        public OrderService(IOrderRepository orderRepository, IShoppingCartRepository shoppingCartRepository, IUserRepository userRepository)
         {
             _orderRepository = orderRepository;
             _shoppingCartRepository = shoppingCartRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetAllOrdersForUser(int userId)
+        public async Task<IEnumerable<OrderDTO>> GetAllOrders()
         {
-            var orders = await _orderRepository.GetAllOrdersForUser(userId);
-
+            var orders = await _orderRepository.GetAllOrders();
             if (orders == null)
             {
                 return Enumerable.Empty<OrderDTO>();
@@ -30,7 +31,8 @@ namespace API.Services
             var orderDTOs = new List<OrderDTO>();
             foreach (var order in orders)
             {
-                var orderDTO = new OrderDTO{
+                var orderDTO = new OrderDTO
+                {
                     Id = order.Id,
                     PhoneNumber = order.PhoneNumber,
                     Address = order.Address,
@@ -40,35 +42,41 @@ namespace API.Services
                     AppUserName = order.AppUser.UserName,
                     ShoppingCart = await _shoppingCartRepository.GetShoppingCartById(order.ShoppingCartId)
                 };
-                // var orderDTO = new OrderDTO
-                // {
-                //     Id = order.Id,
-                //     PhoneNumber = order.PhoneNumber,
-                //     Address = order.Address,
-                //     OrderStatus = order.OrderStatus,
-                //     DateCreated = order.DateCreated,
-                //     AppUserId = order.AppUserId,
-                //     AppUserName = order.AppUser.UserName,
-                //     ShoppingCart = await _shoppingCartRepository.GetShoppingCartById(order.ShoppingCartId)
-                // };
-
                 orderDTOs.Add(orderDTO);
             }
 
             return orderDTOs;
+        }
 
-            // return orders.Select(async order => new OrderDTO
-            // {
-            //     Id = order.Id,
-            //     PhoneNumber = order.PhoneNumber,
-            //     Address = order.Address,
-            //     OrderStatus = order.OrderStatus,
-            //     DateCreated = order.DateCreated,
-            //     AppUserId = order.AppUserId,
-            //     AppUserName = order.AppUser.UserName,
-            //     ShoppingCart = await _shoppingCartRepository.GetShoppingCartById(order.ShoppingCartId)
-            // }).Select(task => task.Result).ToList();
+        public async Task<IEnumerable<OrderDTO>> GetAllOrdersForUser(string username)
+        {
+            var user = _userRepository.GetUserByUsername(username);
 
+            var orders = await _orderRepository.GetAllOrdersForUser(user.Id);
+
+            if (orders == null)
+            {
+                return Enumerable.Empty<OrderDTO>();
+            }
+
+            var orderDTOs = new List<OrderDTO>();
+            foreach (var order in orders)
+            {
+                var orderDTO = new OrderDTO
+                {
+                    Id = order.Id,
+                    PhoneNumber = order.PhoneNumber,
+                    Address = order.Address,
+                    OrderStatus = order.OrderStatus,
+                    DateCreated = order.DateCreated,
+                    AppUserId = order.AppUserId,
+                    AppUserName = order.AppUser.UserName,
+                    ShoppingCart = await _shoppingCartRepository.GetShoppingCartById(order.ShoppingCartId)
+                };
+                orderDTOs.Add(orderDTO);
+            }
+
+            return orderDTOs;
         }
     }
 }

@@ -3,23 +3,24 @@ import { Injectable } from '@angular/core';
 import { LoginDTO } from '../models/loginDTO';
 import { BehaviorSubject, map } from 'rxjs';
 import { RegisterDTO } from '../models/registerDTO';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
   baseUrl = 'https://localhost:5001/api/';
-  private currentUserSource = new BehaviorSubject<LoginDTO | null>(null);
+  private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
   constructor(private httpClient: HttpClient) {}
 
   login(loginDTO: LoginDTO) {
     return this.httpClient
-      .post<LoginDTO>(this.baseUrl + 'account/login', loginDTO)
+      .post<User>(this.baseUrl + 'account/login', loginDTO)
       .pipe(
-        map((response: LoginDTO) => {
+        map((response: User) => {
           const user = response;
-          if (user) {
+          if (user) {            
             localStorage.setItem('user', JSON.stringify(user));
             this.currentUserSource.next(user);
           }
@@ -27,8 +28,8 @@ export class AccountService {
       );
   }
 
-  setCurrentUser(loginDTO: LoginDTO) {
-    this.currentUserSource.next(loginDTO);
+  setCurrentUser(user: User) {
+    this.currentUserSource.next(user);
   }
 
   logout() {
@@ -37,9 +38,9 @@ export class AccountService {
   }
   register(registerDTO: RegisterDTO) {
     return this.httpClient
-      .post<RegisterDTO>(this.baseUrl + 'account/register', registerDTO)
+      .post<User>(this.baseUrl + 'account/register', registerDTO)
       .pipe(
-        map((response: RegisterDTO) => {
+        map((response: User) => {
           if (response) {
             localStorage.setItem('user', JSON.stringify(response));
             this.currentUserSource.next(response);

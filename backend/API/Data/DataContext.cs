@@ -23,6 +23,6 @@ namespace API.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<FoodIngredient>()
             .HasKey(fi => new { fi.FoodId, fi.IngredientId });
-        }
+        }   
     }
 }

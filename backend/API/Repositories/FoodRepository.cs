@@ -1,4 +1,5 @@
 using API.Data;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,23 @@ namespace API.Repositories
             _context.SaveChanges();
         }
 
+        public FoodDTO ConvertFoodToDTO(int id)
+        {
+            var food = _context.Foods.Find(id);
+            var foodDTO = new FoodDTO
+            {
+                Id = food.Id,
+                Name = food.Name,
+                Description = food.Description,
+                Price = food.Price,
+                AverageRating = food.AverageRating,
+                ViewCount = food.ViewCount,
+                DateCreated = food.DateCreated,
+                Calories = food.Calories
+            };
+            return foodDTO;
+        }
+
         public void DeleteFood(Food food)
         {
             _context.Foods.Remove(food);
@@ -33,7 +51,7 @@ namespace API.Repositories
 
         public async Task<IEnumerable<Food>> GetFoods()
         {
-            return await _context.Foods.ToListAsync();
+            return await _context.Foods.Include(category => category.Categories).ToListAsync();
         }
 
         public void UpdateFood(Food food)

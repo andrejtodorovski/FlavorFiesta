@@ -8,8 +8,8 @@ namespace API.Interfaces.Services
 {
     public interface IShoppingCartService
     {
-        public Task<ShoppingCartDTO> GetShoppingCartForUserAsync(int userId);
+        public Task<ShoppingCartDTO> GetShoppingCartForUserAsync(string username);
         public Task<ShoppingCartDTO> GetShoppingCartById(int Id);
-        void PlaceOrder(int userId, string phoneNumber, string address);
+        void PlaceOrder(string username, string phoneNumber, string address);
     }
 }

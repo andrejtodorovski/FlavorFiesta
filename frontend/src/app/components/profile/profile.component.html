@@ -1,1 +1,108 @@
-<p>profile works!</p>
+<div class="container pt-4 pb-4">
+  <div class="row">
+    <div class="col-4">
+      <div class="card">
+        <img src="{{user?.photoUrl || './assets/user.png'}}" alt="{{user?.userName}}" 
+              class="card-img-top img-thumbnail p-3">
+        <div class="card-body">
+          <div>
+            <strong>Username:</strong>
+            <p>{{ user?.userName }}</p>
+          </div>
+          <div>
+            <strong>Number of reviews:</strong>
+            <p>{{ user?.numberOfReviews }}</p>
+          </div>
+          <div>
+            <strong>Number of orders:</strong>
+            <p>{{ user?.numberOfOrders }}</p>
+          </div>
+          <!-- <div>
+                  <strong>Member since:</strong>
+                  <p>{{user?.created | date: 'dd MMM yyyy'}}</p>
+              </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="tabs-container">
+        <ul class="tabs">
+          <li
+            class="tab"
+            [class.active]="selectedTab === 'tab1'"
+            (click)="selectTab('tab1')"
+          >
+            Most ordered foods
+          </li>
+          <li
+            class="tab"
+            [class.active]="selectedTab === 'tab2'"
+            (click)="selectTab('tab2')"
+          >
+            My reviews
+          </li>
+          <li
+            class="tab"
+            [class.active]="selectedTab === 'tab3'"
+            (click)="selectTab('tab3')"
+          >
+            My orders
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div *ngIf="selectedTab === 'tab1'" class="tab-pane" [class.active]="selectedTab === 'tab1'">
+            <div *ngFor="let foodStats of user?.mostOrderedFoods">
+              Food: {{ foodStats.food.name }} - Number of orders:
+              {{ foodStats.numberOfOrders }}
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 'tab2'" class="tab-pane" [class.active]="selectedTab === 'tab2'">
+            <div *ngFor="let review of user?.reviews">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">{{ review?.id }}</h5>
+                  <p class="card-text">{{ review?.id }}</p>
+                  <p class="card-text">
+                    <small class="text-muted">Posted on {{ review?.id }}</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="selectedTab === 'tab3'" class="tab-pane" [class.active]="selectedTab === 'tab3'">
+            <div class="row mb-3" *ngFor="let order of user?.orders">
+              <div class="col-7 border p-5">
+                <p>
+                  <span class="fw-bold">User: </span>
+                  {{ order.appUserName }}
+                </p>
+                <p>
+                  <span class="fw-bold">Address: </span> {{ order.address }}
+                </p>
+                <p>
+                  <span class="fw-bold">Phone number: </span>
+                  {{ order.phoneNumber }}
+                </p>
+                <p>
+                  <span class="fw-bold">Total price: </span>
+                  {{ order.shoppingCart.totalPrice }}MKD
+                </p>
+                <p>
+                  <span class="fw-bold">Status: </span> {{ order.orderStatus }}
+                </p>
+              </div>
+              <div class="col-5 border p-5">
+                <p><span class="fw-bold">Products: </span></p>
+                <p *ngFor="let cartItem of order.shoppingCart.cartItems">
+                  {{ cartItem.quantity }}x - {{ cartItem.food.name }} =
+                  {{ cartItem.quantity }} x {{ cartItem.food.price }}MKD =
+                  {{ cartItem.subtotal }}MKD
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

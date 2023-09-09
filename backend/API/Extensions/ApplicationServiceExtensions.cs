@@ -22,11 +22,18 @@ namespace API.Extensions
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ICartItemRepository, CartItemRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IReviewRepository, ReviewRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFoodService, FoodService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IOrderService, OrderService>();
+            // services.AddScoped<ICartItemService, CartItemService>();
+            // services.AddScoped<ICategoryService, CategoryService>();
+            // services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IUserService, UserService>();
+
             return services;
         }
         

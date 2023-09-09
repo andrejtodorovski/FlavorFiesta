@@ -14,4 +14,8 @@ export class OrderService {
   getUserOrders() : Observable<OrderInfo[]> {
     return this.httpClient.get<OrderInfo[]>(this.orderUrl);
   }
+
+  getAllOrders() : Observable<OrderInfo[]> {
+    return this.httpClient.get<OrderInfo[]>(this.orderUrl + '/all');
+  }
 }

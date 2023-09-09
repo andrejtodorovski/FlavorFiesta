@@ -14,7 +14,12 @@ namespace API.Repositories
             _context = context;
         }
 
-            public async Task<IEnumerable<Order>> GetAllOrdersForUser(int userId)
+        public async Task<IEnumerable<Order>> GetAllOrders()
+        {
+            return await _context.Orders.Include(user => user.AppUser).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Order>> GetAllOrdersForUser(int userId)
             {
                 return await _context.Orders.Include(user => user.AppUser).Where(o => o.AppUserId == userId).ToListAsync();
             }

@@ -10,6 +10,24 @@
       <p>Average Rating: {{ food?.averageRating }}</p>
       <p>Calories: {{ food?.calories }}</p>
       <p>Description: {{ food?.description }}</p>
+      <form #addToCartForm="ngForm" (ngSubmit)="addFoodToCart()" autocomplete="off">
+        <div class="mb-md-5 mt-md-4">
+          <div class="form-outline form-white mb-4">                 
+            <label class="form-label" for="quantity">quantity</label><br /> 
+            <input
+              required
+              type="number"
+              min="1"
+              class="form-control form-control-lg"
+              name="quantity"
+              [(ngModel)]="addToCart.quantity"
+            />
+          </div>
+          <button class="btn btn-primary btn-lg px-5" type="submit" [disabled]="isFoodAddedToUserShoppingCart || addToCart.quantity < 1">
+            Add to cart
+          </button>
+        </div>
+      </form> 
       <!-- <h6 class="display-6">Ingredients</h6> -->
       <!-- <div *ngFor="let ing of food?.ingredientList">
             {{ ing.quantity }} {{ ing.measure }} {{ ing.name }}

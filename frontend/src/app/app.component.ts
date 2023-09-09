@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './services/account.service';
 import { LoginDTO } from './models/loginDTO';
+import { User } from './models/user';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit {
     if (!userString) {
       return;
     }
-    const user: LoginDTO = JSON.parse(userString);
+    const user: User = JSON.parse(userString);
     this.accountService.setCurrentUser(user);
   }
 }

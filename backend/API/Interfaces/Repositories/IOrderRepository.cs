@@ -5,5 +5,6 @@ namespace API.Interfaces.Repositories
     public interface IOrderRepository
     {
         Task<IEnumerable<Order>> GetAllOrdersForUser(int userId);      
+        Task<IEnumerable<Order>> GetAllOrders();
     }
 }

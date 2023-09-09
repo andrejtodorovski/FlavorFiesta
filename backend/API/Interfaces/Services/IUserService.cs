@@ -6,9 +6,10 @@ using API.DTOs;
 
 namespace API.Interfaces.Services
 {
-    public interface IOrderService
+    public interface IUserService
     {
-        Task<IEnumerable<OrderDTO>> GetAllOrdersForUser(string username);
-        Task<IEnumerable<OrderDTO>> GetAllOrders();
+        Task<UserInfoDTO> GetUserInfo(string username);
+        Task<IEnumerable<UserInfoDTO>> GetUsersInfo();
+
     }
 }

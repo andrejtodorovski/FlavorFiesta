@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.Entities;
 using API.Interfaces.Services;
 using API.DTOs;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -11,9 +12,7 @@ namespace API.Controllers
         public FoodController(IFoodService service)
         {
             _service = service;
-        }
-        // add query param categoryId to this method below
-        
+        }        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Food>>> GetFoods(int categoryId)
         {
@@ -27,7 +26,7 @@ namespace API.Controllers
             if(food == null) return NotFound();
             return Ok(food);
         }
-        [HttpGet("category/{category}")]
+        [HttpGet("category/{categoryId}")]
         public async Task<ActionResult<IEnumerable<Food>>> GetFoodsByCategory(int categoryId)
         {
             var foods = await _service.GetFoodsByCategory(categoryId);
@@ -69,13 +68,21 @@ namespace API.Controllers
         [HttpPost("add-to-cart")]
         public void AddToCart(AddToCartDTO addToCartDTO)
         {
-            _service.AddToCart(addToCartDTO);
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            _service.AddToCart(addToCartDTO, username);
         }
         [HttpGet("categories")]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
             var categories = await _service.GetCategories();
             return Ok(categories);
+        }
+        [HttpGet("is-food-in-user-shopping-cart/{id}")]
+        public async Task<ActionResult<bool>> IsFoodInUserShoppingCart(int id)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var isFoodInUserShoppingCart = await _service.IsFoodInUserShoppingCart(id, username);
+            return Ok(isFoodInUserShoppingCart);
         }
     }
 }

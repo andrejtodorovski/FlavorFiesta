@@ -1,3 +1,4 @@
+using API.DTOs;
 using API.Entities;
 
 namespace API.Interfaces.Repositories
@@ -9,5 +10,6 @@ namespace API.Interfaces.Repositories
         void AddFood(Food food);
         void UpdateFood(Food food);
         void DeleteFood(Food food);
+        FoodDTO ConvertFoodToDTO(int id);
     }
 }

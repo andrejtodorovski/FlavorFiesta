@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.DTOs;
 using API.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +16,18 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrdersForUser()
         {
-            var orders = await _service.GetAllOrdersForUser(1);
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var orders = await _service.GetAllOrdersForUser(username);
             return Ok(orders);
         }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrders()
+        {
+            var orders = await _service.GetAllOrders();
+            return Ok(orders);
+        }
+        
+        
     }
 }
