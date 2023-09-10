@@ -27,20 +27,30 @@ namespace API.Repositories
         public async Task<ShoppingCartDTO> GetShoppingCartById(int Id)
         {
             var shoppingCart = await _context.ShoppingCarts.Include(user => user.AppUser).Include(cart => cart.CartItems).ThenInclude(item => item.Food).FirstOrDefaultAsync(cart => cart.Id == Id);
+            
             var cartItemsDTO = shoppingCart.CartItems.Select(cartItem =>
             {
+                var food = _context.Foods.Find(cartItem.Food.Id);
+                var foodIngredients = _context.FoodIngredients.Include(fi=>fi.Ingredient).Where(fi => fi.FoodId == cartItem.Food.Id).ToList();
+                var ingredients = foodIngredients.Select(fi => fi.Ingredient).ToList();
+                var categories = _context.Categories.Where(c => c.Foods.Any(f => f.Id == cartItem.Food.Id)).ToList();
+                var reviews = _context.Reviews.Where(r => r.FoodId == cartItem.Food.Id).ToList();
                 var foodDTO = new FoodDTO
                 {
-                    Id = cartItem.Food.Id,
-                    Name = cartItem.Food.Name,
-                    Description = cartItem.Food.Description,
-                    Price = cartItem.Food.Price,
-                    AverageRating = cartItem.Food.AverageRating,
-                    ViewCount = cartItem.Food.ViewCount,
-                    DateCreated = cartItem.Food.DateCreated,
-                    Calories = cartItem.Food.Calories
+                    Id = food.Id,
+                    Name = food.Name,
+                    Description = food.Description,
+                    Price = food.Price,
+                    AverageRating = food.AverageRating,
+                    ViewCount = food.ViewCount,
+                    DateCreated = food.DateCreated,
+                    Calories = food.Calories,
+                    PhotoUrl = food.PhotoUrl,
+                    Ingredients = ingredients,
+                    Categories = categories,
+                    Reviews = reviews
                 };
-
+            
                 return new CartItemDTO
                 {
                     Id = cartItem.Id,
@@ -89,16 +99,25 @@ namespace API.Repositories
 
             var cartItemsDTO = shoppingCart.CartItems.Select(cartItem =>
             {
+                var food = _context.Foods.Find(cartItem.Food.Id);
+                var foodIngredients = _context.FoodIngredients.Include(fi=>fi.Ingredient).Where(fi => fi.FoodId == cartItem.Food.Id).ToList();
+                var ingredients = foodIngredients.Select(fi => fi.Ingredient).ToList();
+                var categories = _context.Categories.Where(c => c.Foods.Any(f => f.Id == cartItem.Food.Id)).ToList();
+                var reviews = _context.Reviews.Where(r => r.FoodId == cartItem.Food.Id).ToList();
                 var foodDTO = new FoodDTO
                 {
-                    Id = cartItem.Food.Id,
-                    Name = cartItem.Food.Name,
-                    Description = cartItem.Food.Description,
-                    Price = cartItem.Food.Price,
-                    AverageRating = cartItem.Food.AverageRating,
-                    ViewCount = cartItem.Food.ViewCount,
-                    DateCreated = cartItem.Food.DateCreated,
-                    Calories = cartItem.Food.Calories
+                    Id = food.Id,
+                    Name = food.Name,
+                    Description = food.Description,
+                    Price = food.Price,
+                    AverageRating = food.AverageRating,
+                    ViewCount = food.ViewCount,
+                    DateCreated = food.DateCreated,
+                    Calories = food.Calories,
+                    PhotoUrl = food.PhotoUrl,
+                    Ingredients = ingredients,
+                    Categories = categories,
+                    Reviews = reviews
                 };
 
                 return new CartItemDTO

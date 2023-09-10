@@ -1,5 +1,4 @@
-export interface Review {
-    id: number;
+export interface ReviewDTO {
     rating: number;
     comment: string;
 }

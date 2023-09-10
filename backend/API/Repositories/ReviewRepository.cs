@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
 using API.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
 {
@@ -16,9 +17,21 @@ namespace API.Repositories
             _context = context;
         }
 
+        public async Task<Review> AddReview(Review review)
+        {
+            var r = _context.Reviews.Add(review).Entity;
+            await _context.SaveChangesAsync();
+            return r;
+        }
+
+        public IEnumerable<Review> GetReviewsForFood(int foodId)
+        {
+            return _context.Reviews.Include(f=>f.Food).Where(r => r.FoodId == foodId).ToList();
+        }
+
         public IEnumerable<Review> GetReviewsForUser(int userId)
         {
-            return _context.Reviews.Where(r => r.AppUserId == userId).ToList();
+            return _context.Reviews.Include(f=>f.Food).Where(r => r.AppUserId == userId).ToList();
         }
         
     }

@@ -1,30 +1,20 @@
 <div class="container pt-5 pb-5">
-  <div class="card-group">
-    <div
-      *ngFor="let food of foods"
-      class="card m-3 card-border-radius"
-    >
-      <!-- <img
-        class="card-img-top"
-        routerLink="/food/{{ food.id }}"
-        [src]="'data:image/jpg;base64,' + food.imageList[0].byteArray"
-        alt="food image"
-      /> -->
-      <div class="card-body">
-        <a
-          class="card-title custom-card-title foodName text-dark"
-          routerLink="/food/{{ food.id }}"
-          >{{ food.name }}</a
-        >
-
-        <div class="card-text d-flex justify-content-between">
-          <p>{{ food.viewCount }} views</p>
-        </div>
-        <div class="card-text d-flex justify-content-between text-muted">
-          <p>{{ food.dateCreated }}</p>
-          <!-- <p><a routerLink="/userInfo/{{food.customerName}}" class="foodName">{{ food.customerName }}</a></p> -->
+    <div class="row">
+      <div *ngFor="let food of foods" class="col-md-3">
+        <div class="card mb-3">
+          <img
+            src="{{ food.photoUrl }}"
+            alt=""
+            class="card-img-top img-fluid food-img"
+            routerLink='/food/{{food.id}}'
+          />
+          <div class="card-body">
+            <hr />
+            <h6 class="text-center food-name" routerLink='/food/{{food.id}}'>{{ food.name }}</h6>
+            <hr />
+            <p class="text-center"><span class="fw-bold">Price:</span>{{ food.price }} MKD</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </div>

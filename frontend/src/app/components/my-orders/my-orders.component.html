@@ -1,6 +1,6 @@
 <div class="container pt-5 pb-5">
 <div class="row mb-3" *ngFor="let order of orders">
-  <div class="col-7 border p-5">
+  <div class="col-6 border p-5">
     <p>
       <span class="fw-bold">User: </span>
       {{ order.appUserName }}
@@ -13,7 +13,7 @@
     </p>
     <p><span class="fw-bold">Status: </span> {{ order.orderStatus }}</p>
   </div>
-  <div class="col-5 border p-5">
+  <div class="col-6 border p-5">
     <p><span class="fw-bold">Products: </span></p>
     <p *ngFor="let cartItem of order.shoppingCart.cartItems">
       {{ cartItem.quantity }}x - {{ cartItem.food.name }} = {{ cartItem.quantity}} x {{cartItem.food.price}}MKD = {{ cartItem.subtotal }}MKD

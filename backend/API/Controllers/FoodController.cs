@@ -20,7 +20,7 @@ namespace API.Controllers
             return Ok(foods);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Food>> GetFood(int id)
+        public async Task<ActionResult<FoodDTO>> GetFood(int id)
         {
             var food = await _service.GetFood(id);
             if(food == null) return NotFound();
@@ -83,6 +83,20 @@ namespace API.Controllers
             var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var isFoodInUserShoppingCart = await _service.IsFoodInUserShoppingCart(id, username);
             return Ok(isFoodInUserShoppingCart);
+        }
+        [HttpGet("is-food-reviewed-by-user/{id}")]
+        public async Task<ActionResult<bool>> IsFoodReviewedByUser(int id)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var isFoodReviewedByUser = await _service.IsFoodReviewedByUser(id, username);
+            return Ok(isFoodReviewedByUser);
+        }
+        [HttpPost("leave-review/{id}")]
+        public async Task<ActionResult> LeaveReview(int id, ReviewDTO reviewDTO)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await _service.LeaveReview(reviewDTO, id, username);
+            return Ok();
         }
     }
 }

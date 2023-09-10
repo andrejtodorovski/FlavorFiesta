@@ -10,7 +10,7 @@ namespace API.Interfaces.Services
     public interface IFoodService
     {
         Task<IEnumerable<Food>> GetFoods();
-        Task<Food> GetFood(int id);
+        Task<FoodDTO> GetFood(int id);
         void AddFood(Food food);
         void UpdateFood(Food food);
         void DeleteFood(int Id);
@@ -21,5 +21,7 @@ namespace API.Interfaces.Services
         void AddToCart(AddToCartDTO addToCartDTO, string username);
         Task<IEnumerable<Category>> GetCategories();
         Task<bool> IsFoodInUserShoppingCart(int foodId, string username);
+        Task<bool> IsFoodReviewedByUser(int foodId, string username);
+        Task<Review> LeaveReview(ReviewDTO reviewDTO, int foodId, string username);
     }
 }

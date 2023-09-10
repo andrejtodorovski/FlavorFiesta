@@ -1,47 +1,196 @@
 <div class="bg-light">
   <div class="container">
     <div class="row pt-4" style="height: 70%">
-      <div class="col-5">
-        <img class="img-fluid" src="" alt="Recipe image" />
-      </div>
-      <p class="col-7"></p>
-      <h1 class="display-6">{{ food?.name }}</h1>
-      <p>Total views: {{ food?.viewCount }}</p>
-      <p>Average Rating: {{ food?.averageRating }}</p>
-      <p>Calories: {{ food?.calories }}</p>
-      <p>Description: {{ food?.description }}</p>
-      <form #addToCartForm="ngForm" (ngSubmit)="addFoodToCart()" autocomplete="off">
-        <div class="mb-md-5 mt-md-4">
-          <div class="form-outline form-white mb-4">                 
-            <label class="form-label" for="quantity">quantity</label><br /> 
-            <input
-              required
-              type="number"
-              min="1"
-              class="form-control form-control-lg"
-              name="quantity"
-              [(ngModel)]="addToCart.quantity"
-            />
-          </div>
-          <button class="btn btn-primary btn-lg px-5" type="submit" [disabled]="isFoodAddedToUserShoppingCart || addToCart.quantity < 1">
-            Add to cart
-          </button>
+      <div class="col-4">
+        <div *ngIf="food?.photoUrl">
+          <img
+            class="img-fluid food-img"
+            [src]="food?.photoUrl"
+            alt="{{ food?.name }}"
+          />
         </div>
-      </form> 
-      <!-- <h6 class="display-6">Ingredients</h6> -->
-      <!-- <div *ngFor="let ing of food?.ingredientList">
-            {{ ing.quantity }} {{ ing.measure }} {{ ing.name }}
-          </div> -->
+        <div class="text-center pt-3">
+          <span
+            class="star"
+            [class.filled]="isStarFilled(food?.averageRating!!, 1)"
+            [class.half-filled]="isStarHalfFilled(food?.averageRating!!, 1)"
+          ></span>
+          <span
+            class="star"
+            [class.filled]="isStarFilled(food?.averageRating!!, 2)"
+            [class.half-filled]="isStarHalfFilled(food?.averageRating!!, 2)"
+          ></span>
+          <span
+            class="star"
+            [class.filled]="isStarFilled(food?.averageRating!!, 3)"
+            [class.half-filled]="isStarHalfFilled(food?.averageRating!!, 3)"
+          ></span>
+          <span
+            class="star"
+            [class.filled]="isStarFilled(food?.averageRating!!, 4)"
+            [class.half-filled]="isStarHalfFilled(food?.averageRating!!, 4)"
+          ></span>
+          <span
+            class="star"
+            [class.filled]="isStarFilled(food?.averageRating!!, 5)"
+            [class.half-filled]="isStarHalfFilled(food?.averageRating!!, 5)"
+          ></span>
+        </div>
+      </div>
+      <div class="col-8">
+        <h1 class="display-6">{{ food?.name }}</h1>
+        <div class="mb-3">
+          <h6>Total views:</h6>
+          <span>{{ food?.viewCount }}</span>
+        </div>
+        <div class="mb-3">
+          <h6>Ingredients</h6>
+          <div *ngFor="let ing of food?.ingredients">
+            {{ ing.name }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <h6>Description:</h6>
+          <div>{{ food?.description }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        <form
+          #addToCartForm="ngForm"
+          (ngSubmit)="addFoodToCart()"
+          autocomplete="off"
+        >
+          <div class="mb-md-5 mt-md-4">
+            <div class="form-outline form-white mb-4">
+              <label class="form-label display-inline" for="quantity"
+                >Quantity:
+              </label>
+              <input
+                required
+                type="number"
+                min="1"
+                class="form-control w-25 display-inline ms-4"
+                name="quantity"
+                [(ngModel)]="addToCart.quantity"
+              />
+              <button
+                class="btn btn-primary ms-4 px-3 display-inline"
+                type="submit"
+                [disabled]="
+                  isFoodAddedToUserShoppingCart || addToCart.quantity < 1
+                "
+              >
+                Add to cart
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <h1 class="display-6">Reviews:</h1>
+      <div *ngIf="food?.reviews?.length != 0" class="w-25">
+        <span>{{ food?.reviews?.length }} reviews</span>
+      </div>
+      <div *ngIf="isFoodReviewedByUser">
+        <h3 class="text-danger">You have already put a review on this food</h3>
+      </div>
+      <div>
+        <h5 *ngIf="!isFoodReviewedByUser">
+          What do you think of this food? Share your experience to help others.
+        </h5>
+        <form
+          #reviewForm="ngForm"
+          (ngSubmit)="leaveReview()"
+          autocomplete="off"
+        >
+          <div class="mb-md-5 mt-md-4">
+            <div class="form-outline form-white mb-4">
+              <label class="form-label display-inline" for="rating"
+                >Rating:
+              </label>
+              <input
+                required
+                type="number"
+                min="1"
+                max="5"
+                class="form-control w-25 display-inline mx-3"
+                name="rating"
+                [(ngModel)]="review.rating"
+              />
+              <label class="form-label display-inline pt-4" for="comment"
+                >Comment:
+              </label>
+              <input
+                required
+                type="text"
+                class="form-control w-50 display-inline mx-3"
+                name="comment"
+                [(ngModel)]="review.comment"
+              />
+              <button
+                class="btn btn-primary px-3 display-inline"
+                type="submit"
+                [disabled]="
+                  isFoodReviewedByUser ||
+                  review.rating < 1 ||
+                  review.comment == ''
+                "
+              >
+                Leave a review
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="food?.reviews?.length == 0">
+        <h3 class="mb-3 mt-3">No reviews yet</h3>
+      </div>
+
+      <div *ngFor="let r of food?.reviews">
+        <div class="row mt-3 mb-3">
+          <div class="col-1">
+            <img class="img-fluid" src="../../../assets/user.png" />
+          </div>
+          <div class="col-11 align-self-center">
+            <!-- <span>
+              <a routerLink="/userInfo/{{ r.username }}">{{ r.username }}</a>
+            </span> -->
+          </div>
+        </div>
+        <div class="d-flex mb-3">
+          <div class="d-inline-block">
+            <span
+              class="star"
+              [class.filled]="isStarFilledRating(r.rating, 1)"
+            ></span>
+            <span
+              class="star"
+              [class.filled]="isStarFilledRating(r.rating, 2)"
+            ></span>
+            <span
+              class="star"
+              [class.filled]="isStarFilledRating(r.rating, 3)"
+            ></span>
+            <span
+              class="star"
+              [class.filled]="isStarFilledRating(r.rating, 4)"
+            ></span>
+            <span
+              class="star"
+              [class.filled]="isStarFilledRating(r.rating, 5)"
+            ></span>
+          </div>
+          <!-- <span class="text-muted ms-4">{{ r.reviewedOn }}</span> -->
+        </div>
+        <div class="mb-3">{{ r.comment }}</div>
+        <hr />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <h1 class="display-6">Browse similar foods:</h1>
     </div>
   </div>
-  <!-- <div class="row m-3">
-            <div class="col-8 align-self-center">
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" *ngFor="let c of recipe?.categoryList">
-                        <a class="link-class text-dark" routerLink="/category/{{ c.name.toLocaleLowerCase() }}">{{
-                            c.name }}</a>
-                    </li>
-                </ul>
-            </div>
-        </div> -->
 </div>

@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AddToCart } from 'src/app/models/addToCart';
 import { Food } from 'src/app/models/food';
+import { Review } from 'src/app/models/review';
+import { ReviewDTO } from 'src/app/models/reviewDTO';
 import { FoodService } from 'src/app/services/food.service';
 
 @Component({
@@ -14,6 +16,11 @@ export class FoodComponent implements OnInit {
   food: Food | null = null
   id: any;
   isFoodAddedToUserShoppingCart: boolean = false;
+  isFoodReviewedByUser: boolean = false;
+  review: ReviewDTO = {
+    rating: 0,
+    comment: ''
+  }
   addToCart: AddToCart = {
     foodId: 0,
     quantity: 1
@@ -25,6 +32,7 @@ export class FoodComponent implements OnInit {
       if(this.id!=null){
         this.getFoodById(parseInt(this.id));
         this.checkIfFoodIsInUserShoppingCart(parseInt(this.id));
+        this.checkIfFoodIsReviewedByUser(parseInt(this.id));
       }
     });
   }
@@ -39,6 +47,14 @@ export class FoodComponent implements OnInit {
           this.router.navigateByUrl('/not-found');
       }
     }); 
+  }
+
+  checkIfFoodIsReviewedByUser(id: number) {
+    this.foodService.isFoodReviewedByUser(id).subscribe({
+      next: (response: boolean) => {
+        this.isFoodReviewedByUser = response;
+      }
+    });
   }
 
   checkIfFoodIsInUserShoppingCart(id: number) {
@@ -57,6 +73,29 @@ export class FoodComponent implements OnInit {
         this.isFoodAddedToUserShoppingCart = true;
       }
     });
+  }
+
+  leaveReview() {
+    this.foodService.leaveReview(this.review, this.food!.id).subscribe({
+      next: () => {
+        this.toastrService.success('Review added successfully');
+        this.isFoodReviewedByUser = true;
+        this.getFoodById(this.food!.id);
+      }
+    });
+  }
+
+  isStarFilledRating(rating: number, starNumber: number): boolean {
+    return starNumber <= rating;
+  }
+
+  isStarFilled(averageRating: number, starNumber: number): boolean {
+    return starNumber <= Math.floor(averageRating) ||
+    (starNumber > Math.floor(averageRating) && averageRating > starNumber - 0.25 && averageRating <= starNumber + 0.25);
+  }
+  isStarHalfFilled(averageRating: number, starNumber: number): boolean {
+    return starNumber > Math.floor(averageRating) && starNumber <= Math.ceil(averageRating)
+    && averageRating > starNumber-0.75 && averageRating <= starNumber-0.25;
   }
 
 }

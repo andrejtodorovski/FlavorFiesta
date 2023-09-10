@@ -15,4 +15,8 @@ export class UserService {
   getUserInfo(): Observable<UserInfo> {
     return this.httpClient.get<UserInfo>(this.userUrl + '/info');
   }
+
+  getUserReviews(): Observable<any> {
+    return this.httpClient.get<any>(this.userUrl + '/reviews');
+  }
 }

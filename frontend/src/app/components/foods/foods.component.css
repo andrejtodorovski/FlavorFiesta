@@ -1,0 +1,9 @@
+.food-img {
+    cursor: pointer;
+    object-fit: cover; 
+    height: 300px
+}
+.food-name {
+    cursor: pointer;
+    height: 35px;
+}

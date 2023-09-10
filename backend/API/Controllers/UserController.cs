@@ -26,5 +26,11 @@ namespace API.Controllers
             var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return await _service.GetUserInfo(username);
         }
+        [HttpGet("reviews")]
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviewsForUser()
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return Ok(await _service.GetReviewsForUser(username));
+        }
     }
 }

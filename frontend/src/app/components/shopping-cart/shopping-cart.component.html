@@ -1,16 +1,36 @@
 <div class="bg-light">
-  <div class="container">
-    <div *ngIf="shoppingCart" class="row pt-4">
-      <div *ngFor="let item of shoppingCart.cartItems">
-        <div class="col-5">
-          <img class="img-fluid" src="" alt="Recipe image" />
+  <div class="container pt-5 pb-5">
+    <div *ngIf="shoppingCart">
+      <div class="row">
+        <div *ngFor="let item of shoppingCart.cartItems" class="col-md-3">
+          <div class="card mb-3">
+            <img
+              src="{{ item.food.photoUrl }}"
+              alt=""
+              class="card-img-top img-fluid food-img"
+              routerLink="/food/{{ item.food.id }}"
+            />
+            <div class="card-body">
+              <hr />
+              <h6
+                class="text-center food-name"
+                routerLink="/food/{{ item.food.id }}"
+              >
+                {{ item.food.name }}
+              </h6>
+              <hr />
+              <p class="text-center">
+                <span class="fw-bold">Price:</span>{{ item.food.price }} MKD
+              </p>
+              <p class="text-center">
+                <span class="fw-bold">Quantity:</span> {{ item.quantity }}
+              </p>
+              <p class="text-center">
+                <span class="fw-bold">Subtotal:</span> {{ item.subtotal }} MKD
+              </p>
+            </div>
+          </div>
         </div>
-        <p class="col-7"></p>
-        <h1 class="display-6">{{ item.food.name }}</h1>
-        <p>Calories: {{ item.food.calories }}</p>
-        <p>Quantity: {{ item.quantity }}</p>
-        <p>Price: {{ item.food.price }}</p>
-        <p>Subtotal: {{ item.subtotal }}</p>
       </div>
       <h2>Total price: {{ shoppingCart.totalPrice }}</h2>
     </div>
@@ -19,7 +39,7 @@
         class="btn btn-warning btn-lg"
         data-bs-toggle="modal"
         data-bs-target="#orderModal"
-        [disabled]="!shoppingCart || shoppingCart.cartItems.length==0"
+        [disabled]="!shoppingCart || shoppingCart.cartItems.length == 0"
       >
         Order now
       </button>
@@ -35,14 +55,25 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="orderModalLabel">Enter your Order Info</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h4 class="modal-title" id="orderModalLabel">
+              Enter your Order Info
+            </h4>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body text-center">
-            <form #orderInfoForm="ngForm" (ngSubmit)="submitOrder()" autocomplete="off">
+            <form
+              #orderInfoForm="ngForm"
+              (ngSubmit)="submitOrder()"
+              autocomplete="off"
+            >
               <div class="mb-md-5 mt-md-4">
-                <div class="form-outline form-white mb-4">                 
-                  <label class="form-label" for="address">Address</label><br /> 
+                <div class="form-outline form-white mb-4">
+                  <label class="form-label" for="address">Address</label><br />
                   <input
                     required
                     type="text"
@@ -53,8 +84,10 @@
                   />
                 </div>
                 <div class="form-outline form-white mb-4">
-                    <label class="form-label" for="phoneNumber">Phone number</label><br />
-                    <input
+                  <label class="form-label" for="phoneNumber"
+                    >Phone number</label
+                  ><br />
+                  <input
                     required
                     type="text"
                     class="form-control form-control-lg"
@@ -63,11 +96,19 @@
                     [(ngModel)]="orderInfo.phoneNumber"
                   />
                 </div>
-                <button data-bs-dismiss="modal" aria-label="Close" class="btn btn-primary btn-lg px-5" type="submit" [disabled]="orderInfo.address=='' || orderInfo.phoneNumber==''">
+                <button
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  class="btn btn-primary btn-lg px-5"
+                  type="submit"
+                  [disabled]="
+                    orderInfo.address == '' || orderInfo.phoneNumber == ''
+                  "
+                >
                   Place order
                 </button>
               </div>
-            </form> 
+            </form>
           </div>
         </div>
       </div>

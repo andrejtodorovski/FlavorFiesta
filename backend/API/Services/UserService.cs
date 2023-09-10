@@ -17,16 +17,40 @@ namespace API.Services
             _orderService = orderService;
             _foodRepository = foodRepository;
         }
+
+        public Task<IEnumerable<ReviewInfo>> GetReviewsForUser(string username)
+        {
+            var user = _repository.GetUserByUsername(username);
+            var reviews = _reviewRepository.GetReviewsForUser(user.Id);
+            var reviewInfos = new List<ReviewInfo>();
+            foreach (var review in reviews)
+            {
+                var reviewInfo = new ReviewInfo
+                {
+                    Id = review.Id,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    FoodName = review.Food.Name,
+                    FoodPhotoUrl = review.Food.PhotoUrl,
+                    FoodAverageRating = review.Food.AverageRating,
+                    AppUserName = user.UserName,
+                    AppUserPhotoUrl = user.PhotoUrl,
+                };
+                reviewInfos.Add(reviewInfo);
+            }
+            return Task.FromResult(reviewInfos.AsEnumerable());
+        }
+
         public async Task<UserInfoDTO> GetUserInfo(string username)
         {
             var user = _repository.GetUserByUsername(username);
             var reviews = _reviewRepository.GetReviewsForUser(user.Id);
             var orders = await _orderService.GetAllOrdersForUser(username);
-            
+
             var dictionary = orders.SelectMany(order => order.ShoppingCart.CartItems)
             .GroupBy(cartItem => cartItem.Food.Id)
             .ToDictionary(group => group.Key, group => group.Sum(item => item.Quantity));
-            
+
             var mostOrderedFoods = dictionary.Select(item => new FoodStatsDTO
             {
                 Food = _foodRepository.ConvertFoodToDTO(item.Key),

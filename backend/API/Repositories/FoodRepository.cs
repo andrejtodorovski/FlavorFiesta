@@ -24,6 +24,10 @@ namespace API.Repositories
         public FoodDTO ConvertFoodToDTO(int id)
         {
             var food = _context.Foods.Find(id);
+            var foodIngredients = _context.FoodIngredients.Include(fi=>fi.Ingredient).Where(fi => fi.FoodId == id).ToList();
+            var ingredients = foodIngredients.Select(fi => fi.Ingredient).ToList();
+            var categories = _context.Categories.Where(c => c.Foods.Any(f => f.Id == id)).ToList();
+            var reviews = _context.Reviews.Where(r => r.FoodId == id).ToList();
             var foodDTO = new FoodDTO
             {
                 Id = food.Id,
@@ -33,7 +37,11 @@ namespace API.Repositories
                 AverageRating = food.AverageRating,
                 ViewCount = food.ViewCount,
                 DateCreated = food.DateCreated,
-                Calories = food.Calories
+                Calories = food.Calories,
+                PhotoUrl = food.PhotoUrl,
+                Ingredients = ingredients,
+                Categories = categories,
+                Reviews = reviews
             };
             return foodDTO;
         }

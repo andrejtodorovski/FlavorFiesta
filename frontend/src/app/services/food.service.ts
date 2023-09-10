@@ -39,4 +39,10 @@ export class FoodService {
   isFoodInUserShoppingCart(foodId: number): Observable<boolean> {
     return this.httpClient.get<boolean>(`${this.foodUrl}/is-food-in-user-shopping-cart/${foodId}`);
   }
+  isFoodReviewedByUser(foodId: number): Observable<boolean> {
+    return this.httpClient.get<boolean>(`${this.foodUrl}/is-food-reviewed-by-user/${foodId}`);
+  }
+  leaveReview(review: any, foodId: number): Observable<void> {
+    return this.httpClient.post<void>(`${this.foodUrl}/leave-review/${foodId}`, review);
+  }
 }

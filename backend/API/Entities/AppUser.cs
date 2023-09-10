@@ -14,6 +14,6 @@ namespace API.Entities
         public ICollection<Review> Reviews { get; } = new List<Review>();
         public ICollection<ShoppingCart> ShoppingCarts { get; } = new List<ShoppingCart>();
         public ICollection<Order> Orders { get; } = new List<Order>();
-        // public string PhotoUrl { get; set;}
+        public string PhotoUrl { get; set;}
     }
 }

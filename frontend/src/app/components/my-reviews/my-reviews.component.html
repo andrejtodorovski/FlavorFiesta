@@ -1,1 +1,31 @@
-<p>my-reviews works!</p>
+<div class="bg-light pt-4 pb-4">
+    <div class="container">
+      <h1 class="display-6">My Reviews</h1>
+        <div class="row">
+          <div *ngFor="let review of reviews" class="col-3">
+            <div class="card mb-3">
+              <img
+                src="{{ review.foodPhotoUrl }}"
+                alt=""
+                class="card-img-top img-fluid food-img"
+                routerLink="/food/{{ review.foodName }}"
+              />  
+              <div class="card-body">
+                <hr />
+                <h6
+                  class="text-center food-name"
+                  routerLink="/food/{{ review.foodName }}"
+                >
+                  {{ review.foodName }}
+                </h6>
+                <hr />
+                <p class="text-center"><span class="fw-bold">Rating:</span>{{ review.rating }}</p>
+                <p class="text-center"><span class="fw-bold">Comment:</span>{{ review.comment }}</p>
+                <p class="text-center"><span class="fw-bold">Reviewed on:</span>{{ review.dateReviewed }}</p>
+
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

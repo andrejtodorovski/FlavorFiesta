@@ -1,3 +1,7 @@
+import { Category } from "./category";
+import { Ingredient } from "./ingredient";
+import { Review } from "./review";
+
 export interface Food {
     id: number;
     name: string;
@@ -7,4 +11,8 @@ export interface Food {
     viewCount: number;
     dateCreated: Date;
     calories: number;
+    photoUrl: string;
+    ingredients: Ingredient[];
+    categories: Category[];
+    reviews: Review[];
 }

@@ -10,6 +10,7 @@ namespace API.Entities
         public int ViewCount { get; set; }
         public DateTime DateCreated { get; set; }
         public int Calories { get; set; }
+        public string PhotoUrl { get; set; }
         public ICollection<FoodIngredient> FoodIngredients { get; } = new List<FoodIngredient>();
         public ICollection<Category> Categories { get; } = new List<Category>();
         public ICollection<Review> Reviews { get; } = new List<Review>();

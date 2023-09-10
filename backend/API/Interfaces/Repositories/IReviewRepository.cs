@@ -9,6 +9,7 @@ namespace API.Interfaces.Repositories
     public interface IReviewRepository
     {
         IEnumerable<Review> GetReviewsForUser(int userId);
-
+        IEnumerable<Review> GetReviewsForFood(int foodId);
+        Task<Review> AddReview(Review review);
     }
 }

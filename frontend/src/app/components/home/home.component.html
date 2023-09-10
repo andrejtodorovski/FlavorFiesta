@@ -1,99 +1,96 @@
 <div class="bg-dark text-white">
-    <div class="container pt-3 pb-2">
-      <div class="mb-5 d-flex justify-content-center align-items-end" style="background: url('https://img.freepik.com/free-photo/vegetables-set-left-black-slate_1220-685.jpg?w=1480&t=st=1690120370~exp=1690120970~hmac=f2ef0910e2fd1eccbf10ea37e2eb90496a3155b55b2099f11437a55be6a914aa') no-repeat center center; height: 600px;">
-      </div>
-      </div>
-      </div>
-      <div class="bg-light pt-4 pb-4">
-      <div class="container">
-      <h1 class="display-6">Most Viewed Foods</h1>
-      <div class="card-group bg-light">
-        <div
-          *ngFor="let food of mostViewed"
-          class="card m-3 card-border-radius bg-light"
-        >
-          <!-- <img
-            class="card-img-top"
-            routerLink="/food/{{ food.id }}"
-            [src]="'data:image/jpg;base64,' + food.imageList[0].byteArray"
-            alt="food image"
-          /> -->
-          <div class="card-body">
-            <a
-              class="card-title custom-card-title foodName text-dark"
+  <div class="container pt-3 pb-2">
+    <div
+      class="mb-5 d-flex justify-content-center align-items-end"
+      style="
+        background: url('https://img.freepik.com/free-photo/vegetables-set-left-black-slate_1220-685.jpg?w=1480&t=st=1690120370~exp=1690120970~hmac=f2ef0910e2fd1eccbf10ea37e2eb90496a3155b55b2099f11437a55be6a914aa')
+          no-repeat center center;
+        height: 600px;
+      "
+    ></div>
+  </div>
+</div>
+<div class="bg-light pt-4 pb-4">
+  <div class="container">
+    <h1 class="display-6">Most Viewed Foods</h1>
+      <div class="row">
+        <div *ngFor="let food of mostViewed" class="col-3">
+          <div class="card mb-3">
+            <img
+              src="{{ food.photoUrl }}"
+              alt=""
+              class="card-img-top img-fluid food-img"
               routerLink="/food/{{ food.id }}"
-              >{{ food.name }}</a
-            >
-            
-            <div class="card-text d-flex justify-content-between">
-              <p>{{ food.viewCount }} views</p>
-            </div>
-            <div class="card-text d-flex justify-content-between text-muted">
-              <p>{{ food.dateCreated }}</p>
-              <!-- <p><a routerLink="/userInfo/{{food.customerName}}" class="foodName">{{ food.customerName }}</a></p> -->
+            />  
+            <div class="card-body">
+              <hr />
+              <h6
+                class="text-center food-name"
+                routerLink="/food/{{ food.id }}"
+              >
+                {{ food.name }}
+              </h6>
+              <hr />
+              <p class="text-center"><span class="fw-bold">Price:</span>{{ food.price }} MKD</p>
             </div>
           </div>
-        </div>
       </div>
-      </div>
-      </div>
-      <div class="bg-dark text-white pt-4 pb-4">
-      <div class="container">
-      <h3 class="display-6">Top Rated Foods</h3>
-      <div class="card-group ">
-        <div *ngFor="let food of topRated" class="card m-3 card-border-radius bg-dark text-white border-white">
-          <!-- <img
-            class="card-img-top"
-            routerLink="/food/{{ food.id }}"
-            [src]="'data:image/jpg;base64,' + food.imageList[0].byteArray"
-            alt="food image"
-          /> -->
-          <div class="card-body">
-            <a
-              class="card-title custom-card-title foodName"
+    </div>
+  </div>
+</div>
+<div class="bg-dark text-white pt-4 pb-4">
+  <div class="container">
+    <h3 class="display-6">Top Rated Foods</h3>
+      <div class="row">
+        <div *ngFor="let food of topRated" class="col-3">
+          <div class="card mb-3">
+            <img
+              src="{{ food.photoUrl }}"
+              alt=""
+              class="card-img-top img-fluid food-img"
               routerLink="/food/{{ food.id }}"
-              >{{ food.name }}</a
-            >
-            
-            <div class="card-text d-flex justify-content-between">
-              <p>{{ food.viewCount }} views</p>
-            </div>
-            <div class="card-text d-flex justify-content-between">
-              <p>{{ food.dateCreated }}</p>
-              <!-- <p><a routerLink="/userInfo/{{food.customerName}}" class="foodName whiteText">{{ food.customerName }}</a></p> -->
+            />
+            <div class="card-body">
+              <hr />
+              <h6
+                class="text-center food-name"
+                routerLink="/food/{{ food.id }}"
+              >
+                {{ food.name }}
+              </h6>
+              <hr />
+              <p class="text-center"><span class="fw-bold">Price:</span>{{ food.price }} MKD</p>
             </div>
           </div>
-        </div>
       </div>
-      </div>
-      </div>
-      <div class="bg-light pt-4 pb-4">
-      <div class="container">
-      <h3 class="display-6">Newest Foods</h3>
-      <div class="card-group bg-light">
-        <div *ngFor="let food of newest" class="card m-3 card-border-radius bg-light">
-          <!-- <img
-            class="card-img-top"
-            routerLink="/food/{{ food.id }}"
-            [src]="'data:image/jpg;base64,' + food.imageList[0].byteArray"
-            alt="food image"
-          /> -->
-          <div class="card-body">
-            <a
-              class="card-title custom-card-title foodName text-dark"
+    </div>
+  </div>
+</div>
+<div class="bg-light pt-4 pb-4">
+  <div class="container">
+    <h3 class="display-6">Newest Foods</h3>
+      <div class="row">
+        <div *ngFor="let food of newest" class="col-3">
+          <div class="card mb-3" style="width: 100%;">
+            <img
+              src="{{ food.photoUrl }}"
+              alt=""
+              class="card-img-top img-fluid food-img"
               routerLink="/food/{{ food.id }}"
-              >{{ food.name }}</a
-            >
-            
-            <div class="card-text d-flex justify-content-between">
-              <p>{{ food.viewCount }} views</p>
+            />  
+            <div class="card-body">
+              <hr />
+              <h6
+                class="text-center food-name"
+                routerLink="/food/{{ food.id }}"
+              >
+                {{ food.name }}
+              </h6>
+              <hr />
+              <p class="text-center"><span class="fw-bold">Price:</span>{{ food.price }} MKD</p>
             </div>
-            <div class="card-text d-flex justify-content-between text-muted">
-              <p>{{ food.dateCreated }}</p>
-              <!-- <p><a routerLink="/userInfo/{{food.customerName}}" class="foodName">{{ food.customerName }}</a></p> -->
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
