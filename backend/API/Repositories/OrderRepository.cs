@@ -20,8 +20,21 @@ namespace API.Repositories
         }
 
         public async Task<IEnumerable<Order>> GetAllOrdersForUser(int userId)
-            {
-                return await _context.Orders.Include(user => user.AppUser).Where(o => o.AppUserId == userId).ToListAsync();
-            }
+        {
+            return await _context.Orders.Include(user => user.AppUser).Where(o => o.AppUserId == userId).ToListAsync();
+        }
+
+        public async Task<Order> GetOrderById(int orderId)
+        {
+            return await _context.Orders.Include(user => user.AppUser).Include(s => s.ShoppingCart).ThenInclude(cart => cart.CartItems)
+            .ThenInclude(item => item.Food).FirstOrDefaultAsync(o => o.Id == orderId);
+        }
+
+        public async Task<Order> UpdateOrder(Order order)
+        {
+            var o = _context.Orders.Update(order).Entity;
+            await _context.SaveChangesAsync();
+            return o;
+        }
     }
 }

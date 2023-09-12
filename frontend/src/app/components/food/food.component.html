@@ -1,6 +1,6 @@
-<div class="bg-light">
+<div class="bg-light pt-4 pb-4">
   <div class="container">
-    <div class="row pt-4" style="height: 70%">
+    <div class="row" style="height: 70%">
       <div class="col-4">
         <div *ngIf="food?.photoUrl">
           <img
@@ -42,6 +42,14 @@
         <div class="mb-3">
           <h6>Total views:</h6>
           <span>{{ food?.viewCount }}</span>
+        </div>
+        <div class="mb-3">
+          <h6>Calories:</h6>
+          <span>{{ food?.calories }}</span>
+        </div>
+        <div class="mb-3">
+          <h6>Price:</h6>
+          <span>{{ food?.price }}MKD</span>
         </div>
         <div class="mb-3">
           <h6>Ingredients</h6>
@@ -92,10 +100,10 @@
     <div class="row mb-3">
       <h1 class="display-6">Reviews:</h1>
       <div *ngIf="food?.reviews?.length != 0" class="w-25">
-        <span>{{ food?.reviews?.length }} reviews</span>
+        <h6>{{ food?.reviews?.length }} reviews</h6>
       </div>
       <div *ngIf="isFoodReviewedByUser">
-        <h3 class="text-danger">You have already put a review on this food</h3>
+        <h6 class="text-danger">You have already put a review on this food</h6>
       </div>
       <div>
         <h5 *ngIf="!isFoodReviewedByUser">
@@ -149,15 +157,15 @@
         <h3 class="mb-3 mt-3">No reviews yet</h3>
       </div>
 
-      <div *ngFor="let r of food?.reviews">
+      <div *ngFor="let r of reviews">
         <div class="row mt-3 mb-3">
           <div class="col-1">
-            <img class="img-fluid" src="../../../assets/user.png" />
+            <img class="img-fluid" src="{{r.appUserPhotoUrl || './assets/user.png'}}" alt="{{r.appUserName}}" />
           </div>
           <div class="col-11 align-self-center">
-            <!-- <span>
-              <a routerLink="/userInfo/{{ r.username }}">{{ r.username }}</a>
-            </span> -->
+            <span>
+              <p>{{ r.appUserName }}</p>
+            </span>
           </div>
         </div>
         <div class="d-flex mb-3">
@@ -183,7 +191,7 @@
               [class.filled]="isStarFilledRating(r.rating, 5)"
             ></span>
           </div>
-          <!-- <span class="text-muted ms-4">{{ r.reviewedOn }}</span> -->
+          <span class="text-muted ms-4">{{ r.dateReviewed }}</span>
         </div>
         <div class="mb-3">{{ r.comment }}</div>
         <hr />

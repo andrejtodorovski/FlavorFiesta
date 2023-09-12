@@ -20,4 +20,12 @@ export class MyOrdersComponent implements OnInit {
       .getUserOrders()
       .subscribe((response) => (this.orders = response));
   }
+  downloadInvoice(orderId: number) {
+    this.orderService.downloadInvoice(orderId).subscribe({
+      next: (response) => {
+        const url = window.URL.createObjectURL(response);
+        window.open(url);
+      },
+    });
+  } 
 }

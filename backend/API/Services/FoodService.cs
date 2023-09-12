@@ -81,6 +81,18 @@ namespace API.Services
             return foods.Where(f => f.Categories.Any(c => c.Id == categoryId));
         }
 
+        public Task<IEnumerable<FoodDTO>> GetFoodsForMenu()
+        {
+            var foods = _repository.GetFoods();
+            var foodDTOs = new List<FoodDTO>();
+            foreach (var food in foods.Result)
+            {
+                var foodDTO = _repository.ConvertFoodToDTO(food.Id);
+                foodDTOs.Add(foodDTO);
+            }
+            return Task.FromResult(foodDTOs.AsEnumerable());    
+        }
+
         public async Task<IEnumerable<Food>> GetMostViewedFoods()
         {
             var foods = await _repository.GetFoods();
@@ -91,6 +103,29 @@ namespace API.Services
         {
             var foods = await _repository.GetFoods();
             return foods.OrderByDescending(f => f.DateCreated).Take(4);
+        }
+
+        public Task<IEnumerable<ReviewInfo>> GetReviewsForFood(int foodId)
+        {
+            var reviews = _reviewRepository.GetReviewsForFood(foodId);
+            var reviewInfos = new List<ReviewInfo>();
+            foreach (var review in reviews)
+            {
+                var reviewInfo = new ReviewInfo
+                {
+                    Id = review.Id,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    FoodName = review.Food.Name,
+                    FoodPhotoUrl = review.Food.PhotoUrl,
+                    FoodAverageRating = review.Food.AverageRating,
+                    FoodId = review.FoodId,
+                    AppUserName = review.AppUser.UserName,
+                    AppUserPhotoUrl = review.AppUser.PhotoUrl,
+                };
+                reviewInfos.Add(reviewInfo);
+            }
+            return Task.FromResult(reviewInfos.AsEnumerable());
         }
 
         public async Task<IEnumerable<Food>> GetTopRatedFoods()

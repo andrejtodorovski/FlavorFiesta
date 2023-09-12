@@ -31,7 +31,16 @@ export class FoodsComponent implements OnInit {
           : this.foodService.getFoodsByCategory(categoryId)
       )
     ).subscribe((foods) => {
+      console.log(this.categoryId);
       this.foods = foods;
+    });
+  }
+  downloadMenu() {
+    this.foodService.downloadMenu().subscribe({
+      next: (response) => {
+        const url = window.URL.createObjectURL(response);
+        window.open(url);
+      },
     });
   }
 }

@@ -1,4 +1,8 @@
-<div class="container pt-5 pb-5">
+<div class="bg-light pt-4 pb-4">
+  <div class="container">
+    <button class="btn btn-primary mb-3" (click)="downloadMenu()">
+      Download full menu
+    </button>
     <div class="row">
       <div *ngFor="let food of foods" class="col-md-3">
         <div class="card mb-3">
@@ -6,15 +10,20 @@
             src="{{ food.photoUrl }}"
             alt=""
             class="card-img-top img-fluid food-img"
-            routerLink='/food/{{food.id}}'
+            routerLink="/food/{{ food.id }}"
           />
           <div class="card-body">
             <hr />
-            <h6 class="text-center food-name" routerLink='/food/{{food.id}}'>{{ food.name }}</h6>
+            <h6 class="text-center food-name" routerLink="/food/{{ food.id }}">
+              {{ food.name }}
+            </h6>
             <hr />
-            <p class="text-center"><span class="fw-bold">Price:</span>{{ food.price }} MKD</p>
+            <p class="text-center">
+              <span class="fw-bold">Price:</span>{{ food.price }} MKD
+            </p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>

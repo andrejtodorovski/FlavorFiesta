@@ -4,6 +4,7 @@ import { Food } from '../models/food';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category';
 import { AddToCart } from '../models/addToCart';
+import { ReviewInfo } from '../models/reviewInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -45,4 +46,12 @@ export class FoodService {
   leaveReview(review: any, foodId: number): Observable<void> {
     return this.httpClient.post<void>(`${this.foodUrl}/leave-review/${foodId}`, review);
   }
+  getReviewsForFood(foodId: number): Observable<ReviewInfo[]> {
+    return this.httpClient.get<ReviewInfo[]>(`${this.foodUrl}/reviews/${foodId}`);
+  }
+  downloadMenu(): Observable<Blob> {
+    return this.httpClient.get(`${this.foodUrl}/menu`, {
+      responseType: 'blob'
+    });
+  } 
 }

@@ -18,6 +18,16 @@ namespace API.Services
             _foodRepository = foodRepository;
         }
 
+        public Task<bool> UsernameExists(string username)
+        {
+            var user = _repository.GetUserByUsername(username);
+            if (user == null)
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+
         public Task<IEnumerable<ReviewInfo>> GetReviewsForUser(string username)
         {
             var user = _repository.GetUserByUsername(username);
@@ -33,6 +43,7 @@ namespace API.Services
                     FoodName = review.Food.Name,
                     FoodPhotoUrl = review.Food.PhotoUrl,
                     FoodAverageRating = review.Food.AverageRating,
+                    FoodId = review.FoodId,
                     AppUserName = user.UserName,
                     AppUserPhotoUrl = user.PhotoUrl,
                 };
@@ -44,7 +55,7 @@ namespace API.Services
         public async Task<UserInfoDTO> GetUserInfo(string username)
         {
             var user = _repository.GetUserByUsername(username);
-            var reviews = _reviewRepository.GetReviewsForUser(user.Id);
+            var reviews = await GetReviewsForUser(username);
             var orders = await _orderService.GetAllOrdersForUser(username);
 
             var dictionary = orders.SelectMany(order => order.ShoppingCart.CartItems)
@@ -63,6 +74,7 @@ namespace API.Services
                 Id = user.Id,
                 UserName = user.UserName,
                 Reviews = reviews,
+                PhotoUrl = user.PhotoUrl,
                 NumberOfReviews = reviews.Count(),
                 Orders = orders,
                 NumberOfOrders = orders.Count(),
@@ -72,7 +84,23 @@ namespace API.Services
 
         public Task<IEnumerable<UserInfoDTO>> GetUsersInfo()
         {
-            throw new NotImplementedException();
+            var users = _repository.GetUsers();
+            var usersInfo = new List<UserInfoDTO>();
+            foreach (var user in users)
+            {
+                var userInfo = new UserInfoDTO
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    PhotoUrl = user.PhotoUrl,
+                    Reviews = GetReviewsForUser(user.UserName).Result,
+                    NumberOfReviews = GetReviewsForUser(user.UserName).Result.Count(),
+                    Orders = _orderService.GetAllOrdersForUser(user.UserName).Result,
+                    NumberOfOrders = _orderService.GetAllOrdersForUser(user.UserName).Result.Count(),
+                };
+                usersInfo.Add(userInfo);
+            }
+            return Task.FromResult(usersInfo.AsEnumerable());
         }
     }
 }

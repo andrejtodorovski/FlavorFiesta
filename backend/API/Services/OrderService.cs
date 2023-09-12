@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
+using API.Entities;
 using API.Interfaces.Repositories;
 using API.Interfaces.Services;
 
@@ -77,6 +78,30 @@ namespace API.Services
             }
 
             return orderDTOs;
+        }
+
+        public async Task<OrderDTO> GetOrderById(int orderId)
+        {
+            var order = await _orderRepository.GetOrderById(orderId);
+            var orderDTO = new OrderDTO
+            {
+                Id = order.Id,
+                PhoneNumber = order.PhoneNumber,
+                Address = order.Address,
+                OrderStatus = order.OrderStatus,
+                DateCreated = order.DateCreated,
+                AppUserId = order.AppUserId,
+                AppUserName = order.AppUser.UserName,
+                ShoppingCart = _shoppingCartRepository.GetShoppingCartById(order.ShoppingCartId).Result
+            };
+            return orderDTO;
+        }
+
+        public async Task<Order> UpdateOrderStatusToFinished(int orderId)
+        {
+            var order = await _orderRepository.GetOrderById(orderId);
+            order.OrderStatus = "Finished";
+            return await _orderRepository.UpdateOrder(order);
         }
     }
 }

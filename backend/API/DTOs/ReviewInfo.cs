@@ -15,6 +15,7 @@ namespace API.DTOs
         public string FoodName { get; set; }
         public string FoodPhotoUrl { get; set; }
         public double FoodAverageRating { get; set; }
+        public int FoodId { get; set; }
         public string AppUserName { get; set; }
         public string AppUserPhotoUrl { get; set; }
     }

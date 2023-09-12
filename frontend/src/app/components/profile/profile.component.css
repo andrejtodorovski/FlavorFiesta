@@ -44,3 +44,13 @@
 .tab-pane.active {
   display: block;
 }
+
+.food-img {
+  width: 175px;
+  height: 175px;
+  object-fit: cover;
+  cursor: pointer;
+}
+.food-name {
+  cursor: pointer;
+}

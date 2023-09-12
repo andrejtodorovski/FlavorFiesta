@@ -1,4 +1,7 @@
-<div class="container pt-5 pb-5">
+<div class="bg-light pt-4 pb-4">
+  <div class="container">
+    <h1 class="display-6">My orders</h1>
+    <h3 *ngIf="orders.length==0" class="text-danger">You currently have no orders</h3>
 <div class="row mb-3" *ngFor="let order of orders">
   <div class="col-6 border p-5">
     <p>
@@ -18,6 +21,9 @@
     <p *ngFor="let cartItem of order.shoppingCart.cartItems">
       {{ cartItem.quantity }}x - {{ cartItem.food.name }} = {{ cartItem.quantity}} x {{cartItem.food.price}}MKD = {{ cartItem.subtotal }}MKD
     </p>
+    <div *ngIf="order.orderStatus == 'Finished'">
+      <button class="btn btn-primary" (click)="downloadInvoice(order.id)">Invoice</button>
   </div>
+</div>
 </div>
 </div>

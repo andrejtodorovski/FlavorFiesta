@@ -23,5 +23,22 @@ export class AdminOrdersComponent implements OnInit{
     }); 
   }
 
+  setOrderStatusToFinished(orderId: number){
+    this.orderService.setOrderStatusToFinished(orderId).subscribe({
+      next: () => {
+        this.loadOrders();
+      }
+    });
+  }
+
+  downloadOrdersReport() {
+    this.orderService.downloadOrdersReport().subscribe({
+      next: (response) => {
+        const url = window.URL.createObjectURL(response);
+        window.open(url);
+      },
+    });
+  }
+
 
 }

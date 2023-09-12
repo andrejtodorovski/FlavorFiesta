@@ -28,10 +28,13 @@
               <a class="nav-link" routerLink="/my-reviews" routerLinkActive="active">My Reviews</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/admin-orders" routerLinkActive="active">Admin Orders</a>
+              <a class="nav-link" routerLink="/admin-orders" routerLinkActive="active" *ngIf="isAdmin">Admin Orders</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/add-food" routerLinkActive="active">Add Food</a>
+              <a class="nav-link" routerLink="/add-food" routerLinkActive="active" *ngIf="isAdmin">Add Food</a>
+            </li> 
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/users" routerLinkActive="active" *ngIf="isAdmin">Users</a>
             </li> 
             </ul>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

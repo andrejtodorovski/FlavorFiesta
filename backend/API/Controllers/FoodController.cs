@@ -3,6 +3,9 @@ using API.Entities;
 using API.Interfaces.Services;
 using API.DTOs;
 using System.Security.Claims;
+using GemBox.Document;
+using System.Text;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -12,6 +15,8 @@ namespace API.Controllers
         public FoodController(IFoodService service)
         {
             _service = service;
+            ComponentInfo.SetLicense("FREE-LIMITED-KEY");   
+            ComponentInfo.FreeLimitReached += (sender, e) => e.FreeLimitReachedAction = FreeLimitReachedAction.ContinueAsTrial;
         }        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Food>>> GetFoods(int categoryId)
@@ -97,6 +102,61 @@ namespace API.Controllers
             var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             await _service.LeaveReview(reviewDTO, id, username);
             return Ok();
+        }
+        [HttpGet("reviews/{id}")]
+        public async Task<ActionResult<IEnumerable<ReviewInfo>>> GetReviews(int id)
+        {
+            var reviews = await _service.GetReviewsForFood(id);
+            return Ok(reviews);
+        }
+        [HttpGet("menu")]
+        public async Task<ActionResult> DownloadMenu()
+        {
+            var foods = await _service.GetFoodsForMenu();
+            var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Menu.docx");
+            var document = DocumentModel.Load(templatePath);
+            StringBuilder breakfast = new();
+            StringBuilder burgers = new();
+            StringBuilder pizzas = new();
+            StringBuilder desserts = new();
+            StringBuilder drinks = new();
+            StringBuilder pasta = new();
+            foreach (var food in foods)
+            {
+                if (food.Categories.Any(c=>c.Name=="Breakfast"))
+                {
+                    breakfast.AppendLine(food.Name + "\n" + food.Price + "MKD \n" + String.Join('/', food.Ingredients.Select(i=>i.Name)) + "\n");
+                }
+                if (food.Categories.Any(c=>c.Name=="Burgers"))
+                {
+                    burgers.AppendLine(food.Name + "\n" + food.Price + "MKD \n" + String.Join('/', food.Ingredients.Select(i=>i.Name)) + "\n");
+                }
+                if (food.Categories.Any(c=>c.Name=="Pizza"))
+                {
+                    pizzas.AppendLine(food.Name + "\n" + food.Price + "MKD \n" + String.Join('/', food.Ingredients.Select(i=>i.Name)) + "\n");
+                }
+                if (food.Categories.Any(c=>c.Name=="Desserts"))
+                {
+                    desserts.AppendLine(food.Name + "\n" + food.Price + "MKD \n" + String.Join('/', food.Ingredients.Select(i=>i.Name)) + "\n");
+                }
+                if (food.Categories.Any(c=>c.Name=="Drinks"))
+                {
+                    drinks.AppendLine(food.Name + "\n" + food.Price + "MKD \n" + String.Join('/', food.Ingredients.Select(i=>i.Name)) + "\n");
+                }
+                if (food.Categories.Any(c=>c.Name=="Pasta"))
+                {
+                    pasta.AppendLine(food.Name + "\n" + food.Price + "MKD \n" + String.Join('/', food.Ingredients.Select(i=>i.Name)) + "\n");
+                }   
+            }
+            document.Content.Replace("{{Breakfast}}", breakfast.ToString());
+            document.Content.Replace("{{Burgers}}", burgers.ToString());
+            document.Content.Replace("{{Pizza}}", pizzas.ToString());
+            document.Content.Replace("{{Desserts}}", desserts.ToString());
+            document.Content.Replace("{{Drinks}}", drinks.ToString());  
+            document.Content.Replace("{{Pasta}}", pasta.ToString());
+            var stream = new MemoryStream();
+            document.Save(stream, new PdfSaveOptions());
+            return File(stream.ToArray(), new PdfSaveOptions().ContentType, "Menu.pdf");
         }
     }
 }

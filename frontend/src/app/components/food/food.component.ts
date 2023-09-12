@@ -5,6 +5,7 @@ import { AddToCart } from 'src/app/models/addToCart';
 import { Food } from 'src/app/models/food';
 import { Review } from 'src/app/models/review';
 import { ReviewDTO } from 'src/app/models/reviewDTO';
+import { ReviewInfo } from 'src/app/models/reviewInfo';
 import { FoodService } from 'src/app/services/food.service';
 
 @Component({
@@ -14,6 +15,7 @@ import { FoodService } from 'src/app/services/food.service';
 })
 export class FoodComponent implements OnInit {
   food: Food | null = null
+  reviews: ReviewInfo[] = [];
   id: any;
   isFoodAddedToUserShoppingCart: boolean = false;
   isFoodReviewedByUser: boolean = false;
@@ -33,6 +35,7 @@ export class FoodComponent implements OnInit {
         this.getFoodById(parseInt(this.id));
         this.checkIfFoodIsInUserShoppingCart(parseInt(this.id));
         this.checkIfFoodIsReviewedByUser(parseInt(this.id));
+        this.getReviewsForFood(parseInt(this.id));
       }
     });
   }
@@ -47,6 +50,13 @@ export class FoodComponent implements OnInit {
           this.router.navigateByUrl('/not-found');
       }
     }); 
+  }
+  getReviewsForFood(id: number) {
+    this.foodService.getReviewsForFood(id).subscribe({
+      next: (response: ReviewInfo[]) => {
+        this.reviews = response;
+      }
+    });
   }
 
   checkIfFoodIsReviewedByUser(id: number) {
@@ -81,6 +91,7 @@ export class FoodComponent implements OnInit {
         this.toastrService.success('Review added successfully');
         this.isFoodReviewedByUser = true;
         this.getFoodById(this.food!.id);
+        this.getReviewsForFood(this.food!.id);
       }
     });
   }

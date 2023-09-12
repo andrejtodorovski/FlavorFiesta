@@ -11,6 +11,7 @@ import { FoodService } from 'src/app/services/food.service';
 })
 export class NavbarComponent implements OnInit {
   loggedIn = false;
+  isAdmin = false;
   categories : Category[] = [];
   ngOnInit(): void {
     this.getCurrentUser();
@@ -23,6 +24,7 @@ export class NavbarComponent implements OnInit {
   getCurrentUser() {
     return this.accountService.currentUser$.subscribe({
       next: (response) => {
+        this.isAdmin = response?.userName === 'admin';
         this.loggedIn = !!response;
       },
     });

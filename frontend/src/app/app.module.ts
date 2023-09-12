@@ -26,6 +26,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { UsersComponent } from './components/users/users.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     AddFoodComponent,
     MyReviewsComponent,
     NotFoundComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,

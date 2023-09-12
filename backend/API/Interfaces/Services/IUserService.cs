@@ -12,6 +12,6 @@ namespace API.Interfaces.Services
         Task<UserInfoDTO> GetUserInfo(string username);
         Task<IEnumerable<UserInfoDTO>> GetUsersInfo();
         Task<IEnumerable<ReviewInfo>> GetReviewsForUser(string username);
-
+        Task<bool> UsernameExists(string email);
     }
 }

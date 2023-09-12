@@ -18,4 +18,18 @@ export class OrderService {
   getAllOrders() : Observable<OrderInfo[]> {
     return this.httpClient.get<OrderInfo[]>(this.orderUrl + '/all');
   }
+
+  setOrderStatusToFinished(orderId: number) : Observable<void> {
+    return this.httpClient.put<void>(this.orderUrl + '/update-status-to-finished/' + orderId, null);
+  }
+  downloadInvoice(orderId: number) : Observable<Blob> {
+    return this.httpClient.get(`${this.orderUrl}/download-invoice/${orderId}`, {
+      responseType: 'blob'
+    });
+  }
+  downloadOrdersReport() : Observable<Blob> {
+    return this.httpClient.get(`${this.orderUrl}/orders-report`, {
+      responseType: 'blob'
+    });
+  }
 }

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using API.DTOs;
 using API.Interfaces;
+using API.Interfaces.Services;
 
 namespace API.Controllers
 {
@@ -13,47 +14,20 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
-        public AccountController(DataContext context, ITokenService tokenService)
+        private readonly IAccountService _service;
+        public AccountController(DataContext context, ITokenService tokenService, IAccountService service)
         {
             _context = context;   
             _tokenService = tokenService;
+            _service = service;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDTO)
         {
-            if(await UserExists(registerDTO.UserName)) return BadRequest("Username is taken");
-            using var hmac = new HMACSHA512();
-            var user = new AppUser
-            {
-                UserName = registerDTO.UserName.ToLower(),
-                FirstName = registerDTO.FirstName,
-                LastName = registerDTO.LastName,
-                EmailAddress = registerDTO.EmailAddress,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTO.Password)),
-                PasswordSalt = hmac.Key,
-                PhoneNumber = registerDTO.PhoneNumber,
-                Address = registerDTO.Address
-            };
-            _context.Users.Add(user);
-            _context.ShoppingCarts.Add(new ShoppingCart { 
-                AppUser = user,
-                AppUserId = user.Id,
-                Status = "Active",
-             });
-            await _context.SaveChangesAsync();
-            
-            return new UserDTO
-            {
-                UserName = user.UserName,
-                Token = _tokenService.CreateToken(user)
-            };
+            return await _service.Register(registerDTO);
         }
 
-        private async Task<bool> UserExists(string username)
-        {
-            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
-        }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)

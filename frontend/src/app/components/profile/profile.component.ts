@@ -28,4 +28,8 @@ export class ProfileComponent implements OnInit{
     this.selectedTab = tabName;
   }
 
+  isStarFilledRating(rating: number, starNumber: number): boolean {
+    return starNumber <= rating;
+  }
+
 }

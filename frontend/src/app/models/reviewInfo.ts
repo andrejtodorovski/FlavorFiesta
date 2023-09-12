@@ -6,6 +6,7 @@ export interface ReviewInfo {
     foodName: string;
     foodPhotoUrl: string;
     foodAverageRating: number;
+    foodId: number;
     appUserName: string;
     appUserPhotoUrl: string;
 }

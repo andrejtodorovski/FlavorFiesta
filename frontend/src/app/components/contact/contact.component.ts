@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-contact',
@@ -6,17 +8,22 @@ import { Component } from '@angular/core';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent {
-  contact:any = {};
-  // constructor(private contactService: ContactService) {}
+  contact:any = {
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  };
+  constructor(private userService: UserService, private toastrService: ToastrService) {}
 
-  onSubmit() {
-    // this.contactService.sendEmail(this.formData).subscribe({
-    //   next: (response) => {
-    //     console.log(response);
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //   }
-    // });
+  onSubmit() {    
+    this.userService.sendEmail(this.contact).subscribe({
+      next: (response) => {
+        this.toastrService.success('Email sent successfully');
+      },
+      error: (error) => {
+        this.toastrService.error('Email not sent');
+      }
+    });
   }
 }

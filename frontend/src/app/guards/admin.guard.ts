@@ -1,15 +1,30 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import {
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
+import { Observable, map } from 'rxjs';
+import { AccountService } from '../services/account.service';
+import { User } from '../models/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AdminGuard  {
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
+export class AdminGuard {
+  constructor(private accountService: AccountService) {}
+  canActivate(): Observable<boolean> {
+    return this.accountService.currentUser$.pipe(
+      map((user) => {
+        if (user) {
+          if (user.userName === 'admin') {
+            return true;
+          }
+          return false;
+        } else {
+          return false;
+        }
+      })
+    );
   }
-  
 }

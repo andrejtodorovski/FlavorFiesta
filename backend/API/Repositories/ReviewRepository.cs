@@ -26,7 +26,7 @@ namespace API.Repositories
 
         public IEnumerable<Review> GetReviewsForFood(int foodId)
         {
-            return _context.Reviews.Include(f=>f.Food).Where(r => r.FoodId == foodId).ToList();
+            return _context.Reviews.Include(f=>f.Food).Include(u=>u.AppUser).Where(r => r.FoodId == foodId).ToList();
         }
 
         public IEnumerable<Review> GetReviewsForUser(int userId)

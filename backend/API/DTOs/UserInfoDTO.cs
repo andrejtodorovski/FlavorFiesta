@@ -10,7 +10,8 @@ namespace API.DTOs
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public IEnumerable<Review> Reviews { get; set; }
+        public string PhotoUrl { get; set; }
+        public IEnumerable<ReviewInfo> Reviews { get; set; }
         public int NumberOfReviews { get; set; }
         public IEnumerable<OrderDTO> Orders { get; set; }
         public int NumberOfOrders { get; set; }

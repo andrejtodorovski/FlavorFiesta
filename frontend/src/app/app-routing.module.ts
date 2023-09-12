@@ -15,6 +15,7 @@ import { MyReviewsComponent } from './components/my-reviews/my-reviews.component
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { UsersComponent } from './components/users/users.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -36,6 +37,7 @@ const routes: Routes = [
     children: [
       { path: 'admin-orders', component: AdminOrdersComponent },
       { path: 'add-food', component: AddFoodComponent },
+      { path: 'users', component: UsersComponent}
     ],
   },
   { path: 'not-found', component: NotFoundComponent },

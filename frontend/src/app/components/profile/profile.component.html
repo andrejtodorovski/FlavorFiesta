@@ -2,8 +2,11 @@
   <div class="row">
     <div class="col-4">
       <div class="card">
-        <img src="{{user?.photoUrl || './assets/user.png'}}" alt="{{user?.userName}}" 
-              class="card-img-top img-thumbnail p-3">
+        <img
+          src="{{ user?.photoUrl || './assets/user.png' }}"
+          alt="{{ user?.userName }}"
+          class="card-img-top img-thumbnail p-3"
+        />
         <div class="card-body">
           <div>
             <strong>Username:</strong>
@@ -50,32 +53,99 @@
           </li>
         </ul>
         <div class="tab-content">
-          <div *ngIf="selectedTab === 'tab1'" class="tab-pane" [class.active]="selectedTab === 'tab1'">
+          <div
+            *ngIf="selectedTab === 'tab1'"
+            class="tab-pane"
+            [class.active]="selectedTab === 'tab1'"
+          >
             <div *ngFor="let foodStats of user?.mostOrderedFoods">
-              Food: {{ foodStats.food.name }} - Number of orders:
-              {{ foodStats.numberOfOrders }}
-            </div>
-          </div>
-          <div *ngIf="selectedTab === 'tab2'" class="tab-pane" [class.active]="selectedTab === 'tab2'">
-            <div *ngFor="let review of user?.reviews">
-              <div class="card mb-3">
-                <div class="card-body">
-                  <h5 class="card-title">{{ review?.id }}</h5>
-                  <p class="card-text">{{ review?.id }}</p>
-                  <p class="card-text">
-                    <small class="text-muted">Posted on {{ review?.id }}</small>
-                  </p>
+              <div class="row mt-3 mb-3">
+                <div class="col-3">
+                  <img
+                    class="img-fluid food-img"
+                    src="{{ foodStats.food.photoUrl }}"
+                    alt="{{ foodStats.food.name }}"
+                    routerLink="/food/{{ foodStats.food.id }}"
+                  />
+                </div>
+                <div class="col-9 align-self-center">
+                  <span>
+                    <h4
+                      class="food-name"
+                      routerLink="/food/{{ foodStats.food.id }}"
+                    >
+                      {{ foodStats.food.name }}
+                    </h4>
+                  </span>
+                  <div class="mb-3">
+                    <strong>Number of orders: </strong>
+                    {{ foodStats.numberOfOrders }}
+                  </div>
                 </div>
               </div>
+              <hr />
             </div>
           </div>
-          <div *ngIf="selectedTab === 'tab3'" class="tab-pane" [class.active]="selectedTab === 'tab3'">
-            <div class="row mb-3" *ngFor="let order of user?.orders">
-              <div class="col-7 border p-5">
-                <p>
-                  <span class="fw-bold">User: </span>
-                  {{ order.appUserName }}
-                </p>
+          <div
+            *ngIf="selectedTab === 'tab2'"
+            class="tab-pane"
+            [class.active]="selectedTab === 'tab2'"
+          >
+            <div *ngFor="let r of user?.reviews">
+              <div class="row mt-3 mb-3">
+                <div class="col-3">
+                  <img
+                    class="img-fluid food-img"
+                    src="{{ r.foodPhotoUrl }}"
+                    alt="{{ r.foodName }}"
+                    routerLink="/food/{{ r.foodId }}"
+                  />
+                </div>
+                <div class="col-9 align-self-center">
+                  <span>
+                    <h4 class="food-name" routerLink="/food/{{ r.foodId }}">
+                      {{ r.foodName }}
+                    </h4>
+                  </span>
+
+                  <div class="d-flex mb-3">
+                    <div class="d-inline-block">
+                      <span
+                        class="star"
+                        [class.filled]="isStarFilledRating(r.rating, 1)"
+                      ></span>
+                      <span
+                        class="star"
+                        [class.filled]="isStarFilledRating(r.rating, 2)"
+                      ></span>
+                      <span
+                        class="star"
+                        [class.filled]="isStarFilledRating(r.rating, 3)"
+                      ></span>
+                      <span
+                        class="star"
+                        [class.filled]="isStarFilledRating(r.rating, 4)"
+                      ></span>
+                      <span
+                        class="star"
+                        [class.filled]="isStarFilledRating(r.rating, 5)"
+                      ></span>
+                    </div>
+                    <span class="text-muted ms-4">{{ r.dateReviewed }}</span>
+                  </div>
+                  <div class="mb-3">{{ r.comment }}</div>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
+          <div
+            *ngIf="selectedTab === 'tab3'"
+            class="tab-pane"
+            [class.active]="selectedTab === 'tab3'"
+          >
+            <div class="row mb-3 px-3" *ngFor="let order of user?.orders">
+              <div class="col-12 px-2 py-3">
                 <p>
                   <span class="fw-bold">Address: </span> {{ order.address }}
                 </p>
@@ -90,8 +160,6 @@
                 <p>
                   <span class="fw-bold">Status: </span> {{ order.orderStatus }}
                 </p>
-              </div>
-              <div class="col-5 border p-5">
                 <p><span class="fw-bold">Products: </span></p>
                 <p *ngFor="let cartItem of order.shoppingCart.cartItems">
                   {{ cartItem.quantity }}x - {{ cartItem.food.name }} =
@@ -99,6 +167,7 @@
                   {{ cartItem.subtotal }}MKD
                 </p>
               </div>
+              <hr/>
             </div>
           </div>
         </div>

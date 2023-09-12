@@ -1,5 +1,8 @@
+using API.DTOs;
 using API.Extensions;
+using API.Interfaces.Services;
 using API.Middlewares;
+using API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
-
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
+builder.Services.AddTransient<IMailService, MailService>();
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();

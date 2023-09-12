@@ -1,4 +1,5 @@
 using API.Data;
+using API.DTOs;
 using API.Interfaces;
 using API.Interfaces.Repositories;
 using API.Interfaces.Services;
@@ -29,6 +30,7 @@ namespace API.Extensions
             services.AddScoped<IFoodService, FoodService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IAccountService, AccountService>();
             // services.AddScoped<ICartItemService, CartItemService>();
             // services.AddScoped<ICategoryService, CategoryService>();
             // services.AddScoped<IReviewService, ReviewService>();
