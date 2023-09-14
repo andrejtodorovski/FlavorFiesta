@@ -29,10 +29,12 @@ namespace API.Services
             return _repository.GetShoppingCartForUserAsync(user.Id);
         }
 
-        public void PlaceOrder(string username, string phoneNumber, string address)
+        public void PlaceOrder(string username, PlaceOrderDTO placeOrderDTO)
         {
             var user = _userRepository.GetUserByUsername(username);
-            _repository.PlaceOrder(user.Id, phoneNumber, address);
+            _repository.PlaceOrder(user.Id, placeOrderDTO);
+            _repository.ShoppingCartUpdates(user.Id, placeOrderDTO);
+
         }
     }
 }

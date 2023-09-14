@@ -8,9 +8,10 @@ namespace API.Interfaces.Repositories
         Task<ShoppingCartDTO> GetShoppingCartById(int Id);      
 
         Task<ShoppingCartDTO> GetShoppingCartForUserAsync(int userId);      
-        void PlaceOrder(int userId, string phoneNumber, string address);
+        Task PlaceOrder(int userId, PlaceOrderDTO placeOrderDTO);
 
         ShoppingCart Create(AppUser user);
         Task<ShoppingCart> GetShoppingCartByUserId(int userId);
+        Task ShoppingCartUpdates(int userId, PlaceOrderDTO placeOrderDTO);
     }
 }

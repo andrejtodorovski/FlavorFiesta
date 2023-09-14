@@ -25,7 +25,7 @@ namespace API.Controllers
         public void PlaceOrder(PlaceOrderDTO placeOrderDTO)
         {
             var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            _service.PlaceOrder(username, placeOrderDTO.PhoneNumber, placeOrderDTO.Address);
+            _service.PlaceOrder(username, placeOrderDTO);
         }
 
         

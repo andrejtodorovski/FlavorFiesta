@@ -3,6 +3,7 @@ using API.Extensions;
 using API.Interfaces.Services;
 using API.Middlewares;
 using API.Services;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 

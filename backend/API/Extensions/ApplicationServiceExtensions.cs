@@ -6,6 +6,7 @@ using API.Interfaces.Services;
 using API.Repositories;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace API.Extensions
 {
@@ -14,6 +15,7 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<DataContext>(options => options.UseSqlite(config.GetConnectionString("DefaultConnection")));
+            StripeConfiguration.ApiKey = config.GetSection("StripeSettings:SecretKey").Value;
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddCors();
@@ -26,16 +28,16 @@ namespace API.Extensions
             services.AddTransient<IReviewRepository, ReviewRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ITokenService, Services.TokenService>();
             services.AddScoped<IFoodService, FoodService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountService, Services.AccountService>();
             // services.AddScoped<ICartItemService, CartItemService>();
             // services.AddScoped<ICategoryService, CategoryService>();
             // services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IUserService, UserService>();
-
+    
             return services;
         }
         
